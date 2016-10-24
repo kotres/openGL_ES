@@ -8,7 +8,7 @@ CC = g++
 COMPILER_FLAGS = -Wall
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2
+LINKER_FLAGS = -lSDL2 -lGL
 
 #TARGET specifies the name of our exectuable
 TARGET = fenetreSDL
