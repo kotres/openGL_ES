@@ -1,11 +1,11 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = fenetreSDL.cpp
+OBJS = fenetreSDL.cpp main.cpp
 
 #CC specifies which compiler we're using
 CC = g++
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -Wall
+COMPILER_FLAGS = -Wall -Wextra
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lSDL2 -lGL
