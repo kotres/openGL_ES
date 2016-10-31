@@ -51,6 +51,11 @@ void Fenetre::afficher()
     SDL_GL_SwapWindow(fenetreSDL);
 }
 
+bool Fenetre::estValide()
+{
+    return valide;
+}
+
 Fenetre::~Fenetre()
 {
     //destruction du contexte openGL
