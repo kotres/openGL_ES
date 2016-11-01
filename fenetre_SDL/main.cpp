@@ -1,13 +1,13 @@
 #include "fenetreSDL.hpp"
 #include "input.hpp"
-//#include "shader.hpp"
+#include "shader.hpp"
 
 int main( int argc, char* args[] )
 {
     Fenetre fen;
     Input in;
     //glewInit();
-    //Shader sh("vertexShader.vsh","fragmentshader.fsh");
+    Shader sh("vertexShader.vsh","fragmentShader.fsh");
     if(fen.estValide()==false)
         return 0;
 
@@ -30,7 +30,7 @@ int main( int argc, char* args[] )
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
-    //sh.utiliser();
+    sh.utiliser();
     while(in.euLieu()==false){
         SDL_Delay(15);
         in.misAJour();

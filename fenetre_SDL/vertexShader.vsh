@@ -1,5 +1,6 @@
-azerty
-uiop
-qsdf
-ghjk
-lm
+
+void main(void)
+{
+   gl_Position = gl_Vertex;;
+
+}
