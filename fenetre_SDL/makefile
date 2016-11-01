@@ -5,10 +5,10 @@ OBJS = fenetreSDL.cpp input.cpp main.cpp
 CC = g++
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -Wall -Wextra
+COMPILER_FLAGS = -g -Wall -Wextra -std=c++11
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2 -lGL
+LINKER_FLAGS = -lSDL2 -lGL -lGLEW
 
 #TARGET specifies the name of our exectuable
 TARGET = fenetreSDL
