@@ -90,6 +90,11 @@ void Shader::utiliser()
     //std::cout<<"patate"<<std::endl;
 }
 
+GLuint Shader::ID()
+{
+    return ProgramID;
+}
+
 Shader::~Shader()
 {
     glDeleteProgram(ProgramID);

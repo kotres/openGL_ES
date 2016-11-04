@@ -13,16 +13,17 @@
 };*/
 
 class Shader{
-    Shader();
     GLuint ProgramID;
     bool valide;
     std::string charger(std::string nomFichier);
     GLuint compiler(std::string nomFichier,	GLenum typeShader);
 public:
+    Shader();
     ~Shader();
     Shader(std::string nomVertex,std::string nomFragment);
     void utiliser();
     bool estValide();
+    GLuint ID();
 };
 
 #endif

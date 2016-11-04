@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = fenetreSDL.cpp input.cpp shader.cpp main.cpp
+OBJS = fenetreSDL.cpp input.cpp shader.cpp objetGL.cpp main.cpp
 
 #CC specifies which compiler we're using
 CC = g++
