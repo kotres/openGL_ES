@@ -1,14 +1,14 @@
 #include "fenetreSDL.hpp"
 #include "input.hpp"
 //#include "shader.hpp"
-#include "objetGL.hpp"
+#include "objet3D.hpp"
 
 int main( int argc, char* args[] )
 {
     Fenetre fen;
     Input in;
     //glewInit();
-    Shader sh("vertexShader.vsh","fragmentShader.fsh");
+    Shader sh("shaders/vertexShader.vsh","shaders/fragmentShader.fsh");
     if(fen.estValide()==false)
         return 0;
 
@@ -31,14 +31,18 @@ int main( int argc, char* args[] )
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);*/
 
-    sh.utiliser();
-    ObjetGL objGL;
+    //sh.utiliser();
+    Objet3D obj3D;
+    obj3D.shader=&sh;
+    float time=0.0;
     while(in.euLieu()==false){
         SDL_Delay(15);
         in.misAJour();
         //glDrawArrays(GL_TRIANGLES, 0, 3);
-        objGL.dessiner();
+        obj3D.position=glm::vec4(0.5*sin(time/250),0.5*cos(time/100),0.0,0.0);
+        obj3D.dessiner();
         fen.afficher();
+        time+=15;
     }
 
     //glDeleteBuffers(1, &vbo);

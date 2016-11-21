@@ -18,7 +18,7 @@ bool Fenetre::initSDL()
         std::cout<<"SDL n'a pas pu etre initialise, erreur:"<<SDL_GetError()<<std::endl;
         return false;
     }
-    fenetreSDL = SDL_CreateWindow( "fenetre SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    fenetreSDL = SDL_CreateWindow( "executable", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    LARGEUR_FENETRE, HAUTEUR_FENETRE, SDL_WINDOW_OPENGL );
     if(fenetreSDL==NULL){
         std::cout<<"la fenetre n'as pas pu etre cree, erreur: "<<SDL_GetError()<<std::endl;

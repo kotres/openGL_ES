@@ -1,9 +1,9 @@
-#include "objetGL.hpp"
+#include "objet3D.hpp"
 
 
-ObjetGL::ObjetGL()
+Objet3D::Objet3D()
 {
-    //shader=Shader("vertexShader.vsh","fragmentShader.fsh");
+    shader=nullptr;
     vertices={
         -0.5f, -0.5f, 1.0f,
          0.5f, -0.5f, 0.0f,
@@ -19,11 +19,14 @@ ObjetGL::ObjetGL()
     //on dit a opengl comment l'interpreter
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
+
+    position=glm::vec4(0.0);
 }
 
-void ObjetGL::dessiner()
+void Objet3D::dessiner()
 {
-   // shader.utiliser();
+    shader->utiliser();
+    glUniform4fv(glGetUniformLocation(shader->ID(),"position"), 1, glm::value_ptr(position));
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
@@ -36,7 +39,7 @@ void ObjetGL::dessiner()
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-ObjetGL::~ObjetGL()
+Objet3D::~Objet3D()
 {
     glDeleteBuffers(1, &vbo);
 }
