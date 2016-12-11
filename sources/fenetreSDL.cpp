@@ -42,6 +42,10 @@ bool Fenetre::initGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+    //activation du depth test et on prend le fragment le plus proche
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     //verification des parametres
     int majVer,minVer;
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,&majVer);
@@ -65,7 +69,7 @@ void Fenetre::afficher()
 {
     SDL_GL_SwapWindow(fenetreSDL);
     glClearColor(0.0f,0.0f,1.0f,1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 }
 
 bool Fenetre::estValide()

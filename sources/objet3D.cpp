@@ -3,12 +3,16 @@
 
 Objet3D::Objet3D()
 {
+    loadObj("objets/teapot.obj");
     shader=nullptr;
-    vertices={
-        -0.5f, -0.5f, 1.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    /*vertices={
+        0.0f, 0.0f, 0.0f,
+        0.4f, 0.0f, 0.0f,
+        0.4f,  0.4f, 1.0f,
+        0.0, -0.4, -1.0
     };
+
+    indices={0,1,2,1,0,3};*/
 
     glGenBuffers(1, &vbo);
     //c'est un type array
@@ -18,6 +22,13 @@ Objet3D::Objet3D()
                  &vertices.front(), GL_DYNAMIC_DRAW);
     //on dit a opengl comment l'interpreter
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+
+    glGenBuffers(1, &vbi);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+
     glEnableVertexAttribArray(0);
 
     position=glm::vec3(0.0);
@@ -38,7 +49,51 @@ void Objet3D::dessiner()
        0,                  // stride
        (void*)0            // array buffer offset
     );
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
+
+    glDrawElements(
+        GL_TRIANGLES,      // mode
+        indices.size(),    // count
+        GL_UNSIGNED_INT,   // type
+        (void*)0           // element array buffer offset
+    );
+}
+
+void Objet3D::loadObj(const char* filePath){
+    std::ifstream fileStream(filePath, std::ios::in);
+
+    if(!fileStream.is_open()) {
+        std::cout << "le fichier " << filePath << " n'as pas pu etre ouvert" << std::endl;
+    }
+    else{
+        std::string ligne = "";
+            while(!fileStream.eof()) {
+                std::getline(fileStream, ligne);
+                if(ligne[0]=='v' && ligne[1] == ' '){//v est une ligne décrivant un sommet
+                     std::istringstream iss(ligne.substr(2));//on utilise un iss de la ligne sans "v "
+                     float x,y,z;
+                     iss >> x >> y>> z;//on preleve les valeurs des sommets
+                     vertices.push_back(x);
+                     vertices.push_back(y);
+                     vertices.push_back(z);
+                     //std::cout<<x<<"_"<<y<<"_"<<z<<std::endl;
+                }
+                if(ligne[0] == 'f' && ligne[1] == ' '){//si c'est des indices de triangles
+                    ligne=ligne.substr(2);
+                    unsigned int indiceObj;
+                    for(int i=0;i<3;i++){
+                        std::size_t posEspace=ligne.find_first_of(" ");
+                        indiceObj=atoi(ligne.substr(0,posEspace).c_str());
+                        indiceObj--;
+                        indices.push_back(indiceObj);
+                        ligne=ligne.substr(posEspace+1);
+                    }
+                    //std::cout<<indices[0]<<"_"<<indices[1]<<"_"<<indices[2]<<std::endl;
+                }
+            }
+        fileStream.close();
+    }
 }
 
 Objet3D::~Objet3D()

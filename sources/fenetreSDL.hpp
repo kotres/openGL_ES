@@ -6,8 +6,8 @@
 #include <GL/gl.h>
 #include <iostream>
 #include <unistd.h>
-#define HAUTEUR_FENETRE 480
-#define LARGEUR_FENETRE 720
+#define HAUTEUR_FENETRE 600
+#define LARGEUR_FENETRE 600
 
 
 /* class Fenetre:
