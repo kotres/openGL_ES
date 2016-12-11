@@ -14,7 +14,8 @@ class Objet3D{
     GLuint vbo;
     std::vector<GLfloat> vertices;
 public:
-    glm::vec4 position;
+    glm::vec3 position;
+    glm::mat4 rotation;
     Shader *shader;
     Objet3D();
     void dessiner();

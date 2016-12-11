@@ -20,13 +20,15 @@ Objet3D::Objet3D()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
 
-    position=glm::vec4(0.0);
+    position=glm::vec3(0.0);
+    rotation=glm::mat4(1.0);
 }
 
 void Objet3D::dessiner()
 {
     shader->utiliser();
-    glUniform4fv(glGetUniformLocation(shader->ID(),"position"), 1, glm::value_ptr(position));
+    glUniform3fv(glGetUniformLocation(shader->ID(),"position"), 1, glm::value_ptr(position));
+    glUniformMatrix4fv(glGetUniformLocation(shader->ID(),"rotation"), 1,GL_FALSE,glm::value_ptr(rotation));
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
        0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.

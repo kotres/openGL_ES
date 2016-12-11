@@ -39,7 +39,11 @@ int main( int argc, char* args[] )
         SDL_Delay(15);
         in.misAJour();
         //glDrawArrays(GL_TRIANGLES, 0, 3);
-        obj3D.position=glm::vec4(0.5*sin(time/250),0.5*cos(time/100),0.0,0.0);
+        obj3D.position=glm::vec3(0.5*sin(time/250),0.5*cos(time/100),0.0);
+        obj3D.rotation[0].x=cos(time/500);
+        obj3D.rotation[0].y=sin(time/500);
+        obj3D.rotation[1].x=-sin(time/500);
+        obj3D.rotation[1].y=cos(time/500);
         obj3D.dessiner();
         fen.afficher();
         time+=15;
