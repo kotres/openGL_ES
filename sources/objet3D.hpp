@@ -1,7 +1,9 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <vector>
-#include <sstream>
+//#include <sstream>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

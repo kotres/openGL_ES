@@ -70,7 +70,7 @@ void Objet3D::loadObj(const char* filePath){
         std::string ligne = "";
             while(!fileStream.eof()) {
                 std::getline(fileStream, ligne);
-                if(ligne[0]=='v' && ligne[1] == ' '){//v est une ligne décrivant un sommet
+                /*if(ligne[0]=='v' && ligne[1] == ' '){//v est une ligne décrivant un sommet
                      std::istringstream iss(ligne.substr(2));//on utilise un iss de la ligne sans "v "
                      float x,y,z;
                      iss >> x >> y>> z;//on preleve les valeurs des sommets
@@ -90,6 +90,49 @@ void Objet3D::loadObj(const char* filePath){
                         ligne=ligne.substr(posEspace+1);
                     }
                     //std::cout<<indices[0]<<"_"<<indices[1]<<"_"<<indices[2]<<std::endl;
+                }*/
+                std::vector<std::string> tokens;
+                boost::split(tokens, line, boost::is_any_of("/ "));
+                switch (tokens.front()) {
+                case "v":
+                    tokens.erase(tokens.begin());
+                    for(auto tok:tokens)
+                        vertices.push_back(atof(tok));
+                    break;
+                case "f":
+                    tokens.erase(tokens.begin());
+                    switch (tokens.size()) {
+                    case 3:
+                        for(std::string tok:tokens)
+                            indices.push_back(atoi(tok));
+                        break;
+                    case 6:
+                        vector<std::string>::iterator it=tokens.begin();
+                        while(it!=tokens.end()-1){
+                            indices.push_back(atoi(*it));
+                            it++;
+                            //ajout au vecteur d'indices de texture
+                            it++;
+                        }
+                        break;
+                    case 9:
+                        vector<std::string>::iterator it=tokens.begin();
+                        while(it!=tokens.end()-2){
+                            indices.push_back(atoi(*it));
+                            it++;
+                            //ajout au vecteur d'indices de textures
+                            it++;
+                            //ajout au vecteur d'indices de normales
+                            it++;
+                        }
+                    default:
+                        std::cout<<tokens.size();
+                        break;
+                    }
+                    break;
+                default:
+                    std::cout<<tokens.front();
+                    break;
                 }
             }
         fileStream.close();
