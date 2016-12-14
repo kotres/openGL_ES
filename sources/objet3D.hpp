@@ -2,8 +2,7 @@
 #include <GL/gl.h>
 #include <vector>
 //#include <sstream>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include<boost/tokenizer.hpp>
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -14,10 +13,13 @@
 #define OBJET3D_HPP
 
 class Objet3D{
-    GLuint vbo,vbi;
+    GLuint vbo,vbi,vbNormales;
     std::vector<GLfloat> vertices;
-    std::vector<unsigned int>indices;
+    std::vector<GLfloat> normales;
+    std::vector<unsigned int>iVertices;
     void loadObj(const char* filePath);
+    void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales);
+    void parseIndices(std::vector<std::string> lineTokens,std::vector<GLfloat>& listeNormales);
 public:
     glm::vec3 position;
     glm::mat4 rotation;
