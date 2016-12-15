@@ -145,11 +145,14 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<GLfl
     if (lineTokens.size()==6){
         while(it<lineTokens.end()-1){
             //std::cout<<*it<<" ";
-            iVertices.push_back((std::stoi(*it))-1);
+            unsigned int indiceV=(std::stoi(*it))-1;
+            iVertices.push_back(indiceV);
             it++;
-            //ajout au vecteur d'indices de texture
+            //ajout au vecteur de normales
             //std::cout<<listeNormales.at((std::stoi(*it))-1)<<" ";
-            normales.push_back(listeNormales.at((std::stoi(*it))-1));
+            if(normales.size()<indiceV+1)
+                normales.resize(indiceV+1);
+            normales.at(indiceV)=listeNormales.at((std::stoi(*it))-1);
             //std::cout<<normales.back()<<" ";
             it++;
         }
