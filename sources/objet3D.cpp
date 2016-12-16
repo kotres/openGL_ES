@@ -46,15 +46,16 @@ Objet3D::Objet3D()
 
     glEnableVertexAttribArray(0);
 
-    position=glm::vec3(0.0);
-    rotation=glm::mat4(1.0);
+    translation=glm::mat4(1.0f);
+    rotation=glm::mat4(1.0f);
+    scale=glm::mat4(1.0f);
 }
 
 void Objet3D::dessiner()
 {
+    glm::mat4 modelMatrix=translation*rotation*scale;
     shader->utiliser();
-    glUniform3fv(glGetUniformLocation(shader->ID(),"position"), 1, glm::value_ptr(position));
-    glUniformMatrix4fv(glGetUniformLocation(shader->ID(),"rotation"), 1,GL_FALSE,glm::value_ptr(rotation));
+    glUniformMatrix4fv(glGetUniformLocation(shader->ID(),"modelMatrix"), 1,GL_FALSE,glm::value_ptr(modelMatrix));
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(

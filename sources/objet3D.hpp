@@ -6,6 +6,7 @@
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include "shader.hpp"
 
@@ -21,8 +22,9 @@ class Objet3D{
     void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales);
     void parseIndices(std::vector<std::string> lineTokens,std::vector<GLfloat>& listeNormales);
 public:
-    glm::vec3 position;
+    glm::mat4 translation;
     glm::mat4 rotation;
+    glm::mat4 scale;
     Shader *shader;
     Objet3D();
     void dessiner();

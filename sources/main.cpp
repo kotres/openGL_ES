@@ -34,12 +34,13 @@ int main( int argc, char* args[] )
     //sh.utiliser();
     Objet3D obj3D;
     obj3D.shader=&sh;
+    obj3D.scale=glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
     float time=0.0;
     while(in.euLieu()==false){
         SDL_Delay(15);
         in.misAJour();
         //glDrawArrays(GL_TRIANGLES, 0, 3);
-        obj3D.position=glm::vec3(0.5*sin(time/900),0.5*cos(time/800),0.0);
+        obj3D.translation=glm::translate(glm::mat4(1.0),glm::vec3( 0.5*sin(time/900),0.5*cos(time/800),0.0));
         obj3D.rotation[1].y=cos(time/500);
         obj3D.rotation[1].z=sin(time/500);
         obj3D.rotation[2].y=-sin(time/500);
