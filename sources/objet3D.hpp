@@ -9,7 +9,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include "modelMatrix.hpp"
-#include "shader.hpp"
+#include "camera.hpp"
 
 #ifndef OBJET3D_HPP
 #define OBJET3D_HPP
@@ -23,7 +23,7 @@ class Objet3D: public ModelMatrix{
     void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales);
     void parseIndices(std::vector<std::string> lineTokens,std::vector<GLfloat>& listeNormales);
 public:
-    Shader *shader;
+    Camera *camera;
     Objet3D();
     void dessiner();
     ~Objet3D();

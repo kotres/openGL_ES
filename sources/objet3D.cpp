@@ -4,7 +4,6 @@
 Objet3D::Objet3D()
 {
     loadObj("objets/teapot.obj");
-    shader=nullptr;
 
     /*vertices.clear();
     iVertices.clear();
@@ -17,6 +16,8 @@ Objet3D::Objet3D()
     };
 
     iVertices={0,1,2,1,0,3};*/
+
+    camera=nullptr;
 
     glGenBuffers(1, &vbo);
     //c'est un type array
@@ -44,9 +45,10 @@ Objet3D::Objet3D()
 
 void Objet3D::dessiner()
 {
-    glm::mat4 modelMatrix=getModelMatrix();//translation*rotation*scale;
-    shader->utiliser();
-    glUniformMatrix4fv(glGetUniformLocation(shader->ID(),"modelMatrix"), 1,GL_FALSE,glm::value_ptr(modelMatrix));
+    Shader* sh=camera->getShaderPtr();
+    glm::mat4 worldMatrix=camera->getVPMatrix()* getModelMatrix();//translation*rotation*scale;
+    sh->utiliser();
+    glUniformMatrix4fv(glGetUniformLocation(sh->ID(),"worldMatrix"), 1,GL_FALSE,glm::value_ptr(worldMatrix));
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
