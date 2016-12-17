@@ -40,20 +40,11 @@ Objet3D::Objet3D()
     glBufferData(GL_ARRAY_BUFFER, normales.size()* sizeof(normales),
                  &normales.front(), GL_DYNAMIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-
-
-
-    glEnableVertexAttribArray(0);
-
-    translation=glm::mat4(1.0f);
-    rotation=glm::mat4(1.0f);
-    scale=glm::mat4(1.0f);
 }
 
 void Objet3D::dessiner()
 {
-    glm::mat4 modelMatrix=translation*rotation*scale;
+    glm::mat4 modelMatrix=getModelMatrix();//translation*rotation*scale;
     shader->utiliser();
     glUniformMatrix4fv(glGetUniformLocation(shader->ID(),"modelMatrix"), 1,GL_FALSE,glm::value_ptr(modelMatrix));
     glEnableVertexAttribArray(0);
@@ -66,7 +57,6 @@ void Objet3D::dessiner()
        0,                  // stride
        (void*)0            // array buffer offset
     );
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glEnableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
@@ -78,7 +68,6 @@ void Objet3D::dessiner()
                 0,                                // stride
                 (void*)0                          // array buffer offset
             );
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
 

@@ -8,12 +8,13 @@
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 #include <glm/gtc/type_ptr.hpp>
+#include "modelMatrix.hpp"
 #include "shader.hpp"
 
 #ifndef OBJET3D_HPP
 #define OBJET3D_HPP
 
-class Objet3D{
+class Objet3D: public ModelMatrix{
     GLuint vbo,vbi,vbNormales;
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> normales;
@@ -22,9 +23,6 @@ class Objet3D{
     void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales);
     void parseIndices(std::vector<std::string> lineTokens,std::vector<GLfloat>& listeNormales);
 public:
-    glm::mat4 translation;
-    glm::mat4 rotation;
-    glm::mat4 scale;
     Shader *shader;
     Objet3D();
     void dessiner();
