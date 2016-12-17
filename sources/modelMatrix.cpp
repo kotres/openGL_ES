@@ -18,6 +18,12 @@ void ModelMatrix::rotateD(float angleRadian)
     rotationMatrix=glm::rotate(rotationMatrix,angleRadian,axeRotation);
 }
 
+void ModelMatrix::rotate(float gamma, float beta)
+{
+    rotationMatrix=glm::rotate(glm::mat4(1.0),gamma,glm::vec3(1,0,0));
+    rotationMatrix=glm::rotate(rotationMatrix,beta,glm::vec3(0,1,0));
+}
+
 void ModelMatrix::scale(glm::vec3 s)
 {
     scaleMatrix=glm::scale(glm::mat4(1.0),s);

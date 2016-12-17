@@ -16,6 +16,7 @@ public:
     void translate(glm::vec3 tr);
     void translateD(glm::vec3 dtr);
     void rotate(float angleRadian);
+    void rotate(float gamma, float beta);
     void rotateD(float angleRadian);
     void scale(glm::vec3 s);
     void scaleD(glm::vec3 ds);

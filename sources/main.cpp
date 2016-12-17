@@ -19,8 +19,9 @@ int main( /*int argc, char* args[] */)
     while(in.euLieu()==false){
         SDL_Delay(15);
         in.misAJour();
+        cam.rotate(0.010*(in.getY()-300),0.010*(in.getX()-300));
         obj3D.translate(glm::vec3( sin(time/900),-0.5+cos(time/800),-5.0));
-        obj3D.rotate(time/500);
+        obj3D.rotate(time/500,time/693);
         obj3D.dessiner();
         fen.afficher();
         time+=15;

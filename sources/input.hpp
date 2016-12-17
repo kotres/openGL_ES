@@ -14,10 +14,13 @@ class Input{
     bool /*Haut,Bas,Gauche,Droite,Pause,*/Quitter;
     SDL_Event evenements;
     //const Uint8 *etatClavier;
+    int x,y; //dx,dy,xPrecedent,yPrecedent;
 public:
     Input();
     void misAJour();
     bool euLieu(/*inputName nomInput*/);
+    int getX();
+    int getY();
 };
 
 #endif
