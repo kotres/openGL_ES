@@ -3,21 +3,14 @@
 
 Objet3D::Objet3D()
 {
-    loadObj("objets/teapot.obj");
+    //camera=nullptr;
+}
 
-    /*vertices.clear();
-    iVertices.clear();
+Objet3D::Objet3D(const char *filePath)
+{
+    loadObj(filePath);
 
-    vertices={
-        0.0f, 0.0f, 0.0f,
-        0.4f, 0.0f, 0.0f,
-        0.4f,  0.4f, 1.0f,
-        0.0, -0.4, -1.0
-    };
-
-    iVertices={0,1,2,1,0,3};*/
-
-    camera=nullptr;
+    //camera=nullptr;
 
     glGenBuffers(1, &vbo);
     //c'est un type array
@@ -43,12 +36,10 @@ Objet3D::Objet3D()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 }
 
-void Objet3D::dessiner()
+void Objet3D::dessiner(Shader *sh, glm::mat4 mvpMatrix)
 {
-    Shader* sh=camera->getShaderPtr();
-    glm::mat4 worldMatrix=camera->getVPMatrix()* getModelMatrix();//translation*rotation*scale;
     sh->utiliser();
-    glUniformMatrix4fv(glGetUniformLocation(sh->ID(),"worldMatrix"), 1,GL_FALSE,glm::value_ptr(worldMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(sh->ID(),"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
@@ -131,7 +122,7 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<GLfl
     std::vector<std::string>::iterator it=lineTokens.begin();
     if (lineTokens.size()==3) {
         for(auto token:lineTokens){
-        //vertices.push_back(std::stof(token));
+            iVertices.push_back(std::stoi(token)-1);
         }
     }
     if (lineTokens.size()==6){

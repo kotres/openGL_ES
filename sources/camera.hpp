@@ -1,11 +1,11 @@
+#ifndef CAMERA_HPP
+#define CAMERA_HPP
+
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 #include "modelMatrix.hpp"
 #include "shader.hpp"
-
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
 
 class Camera: public ModelMatrix{
     glm::mat4 ProjectionMatrix;

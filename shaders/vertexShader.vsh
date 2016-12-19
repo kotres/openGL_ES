@@ -1,4 +1,4 @@
-uniform mat4 worldMatrix;
+uniform mat4 mvpMatrix;
 
 varying vec3 N;
 varying vec3 v;
@@ -11,5 +11,5 @@ void main(void)
     N = normalize(gl_NormalMatrix * gl_Normal);
 
     vColor=vec4(abs(gl_Vertex).xyz,1.0);
-   gl_Position = worldMatrix*gl_Vertex;
+   gl_Position = mvpMatrix*gl_Vertex;
 }
