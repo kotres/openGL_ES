@@ -79,7 +79,7 @@ void Objet3D::loadObj(const char* filePath){
         std::cout << "le fichier " << filePath << " n'as pas pu etre ouvert" << std::endl;
     }
     else{
-        std::vector<GLfloat> listeNormales;
+        std::map<int,GLfloat> listeNormales;
         std::string ligne = "";
             while(!fileStream.eof()) {
                 std::getline(fileStream, ligne);
@@ -89,7 +89,7 @@ void Objet3D::loadObj(const char* filePath){
         fileStream.close();
 }
 
-void Objet3D::parseObjLine(std::string ligne, std::vector<GLfloat>& listeNormales){
+void Objet3D::parseObjLine(std::string ligne, std::map<int,GLfloat>& listeNormales){
     std::vector<std::string> tokens;
     boost::char_separator<char> sep(" /");
     boost::tokenizer<boost::char_separator<char> > tok(ligne,sep);
@@ -112,13 +112,13 @@ void Objet3D::parseObjLine(std::string ligne, std::vector<GLfloat>& listeNormale
         if(typeLinge=="vn"){
             for(auto token:tokens){
                 //std::cout<<token<<" ";
-                listeNormales.push_back(std::stof(token));
+                listeNormales[listeNormales.size()+1]=std::stof(token);//+1 car les indices de .obj commencent a 1
             }
         }
     }
 }
 
-void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<GLfloat> &listeNormales){
+void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::map<int, GLfloat> &listeNormales){
     std::vector<std::string>::iterator it=lineTokens.begin();
     if (lineTokens.size()==3) {
         for(auto token:lineTokens){
@@ -135,7 +135,7 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<GLfl
             //std::cout<<listeNormales.at((std::stoi(*it))-1)<<" ";
             if(normales.size()<indiceV+1)
                 normales.resize(indiceV+1);
-            normales.at(indiceV)=listeNormales.at((std::stoi(*it))-1);
+            normales.at(indiceV)=listeNormales[(std::stoi(*it))];
             //std::cout<<normales.back()<<" ";
             it++;
         }

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <vector>
+#include <map>
 //#include <sstream>
 #include<boost/tokenizer.hpp>
 
@@ -20,8 +21,8 @@ class Objet3D{
     std::vector<GLfloat> normales;
     std::vector<unsigned int>iVertices;
     void loadObj(const char* filePath);
-    void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales);
-    void parseIndices(std::vector<std::string> lineTokens,std::vector<GLfloat>& listeNormales);
+    void parseObjLine(std::string ligne, std::map<int,GLfloat> &listeNormales);
+    void parseIndices(std::vector<std::string> lineTokens,std::map<int,GLfloat>& listeNormales);
 public:
    // Camera *camera;
     Objet3D();

@@ -1,5 +1,13 @@
 #include "scene.hpp"
 
+Scene::Scene()
+{
+    Camera cam;
+    cameras.push_back(cam);
+    cameraUtilisee=0;
+    shaderUtilise=0;
+}
+
 void Scene::utiliserCamera(unsigned int i){
     if(i<cameras.size())
         cameraUtilisee=i;
@@ -16,4 +24,9 @@ void Scene::utiliserShader(unsigned int i)
 {
     if(i<shaders.size())
         shaderUtilise=i;
+}
+
+Camera &Scene::getCamera()
+{
+    return cameras.at(cameraUtilisee);
 }

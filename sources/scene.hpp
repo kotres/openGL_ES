@@ -10,12 +10,14 @@ class Scene{
     unsigned int cameraUtilisee;
     unsigned int shaderUtilise;
 public:
+    Scene();
     std::vector<Objet3D> objets3D;
     std::vector<Camera> cameras;
     std::vector<ObjetScene> objetsScene;
     std::vector<Shader> shaders;
     void utiliserCamera(unsigned int i);
     void utiliserShader(unsigned int i);
+    Camera& getCamera();
     void dessiner();
 };
 
