@@ -26,7 +26,7 @@ public:
    // Camera *camera;
     Objet3D();
     Objet3D(const char* filePath);
-    void dessiner(Shader *sh, glm::mat4 mvpMatrix);
+    void dessiner(Shader sh, glm::mat4 mvpMatrix);
     ~Objet3D();
 };
 

@@ -6,9 +6,7 @@
 
 class ObjetScene: public ModelMatrix{
 public:
-    Camera* camera;
-    Objet3D* objet3D;
-    void dessiner();
+    unsigned int objet3D;
 };
 
 #endif

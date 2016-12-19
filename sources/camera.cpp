@@ -1,13 +1,13 @@
 #include "camera.hpp"
 
 Camera::Camera(){
-    shader=nullptr;
+    //shader=nullptr;
     setPerspective(0.78539816339,1.0,0.1,100.0);
 }
 
-Shader* Camera::getShaderPtr(){
+/*Shader* Camera::getShaderPtr(){
     return shader;
-}
+}*/
 
 void Camera::setFOV(float f)
 {

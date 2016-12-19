@@ -14,8 +14,8 @@ class Camera: public ModelMatrix{
     float Znear,Zfar;
 public:
     Camera();
-    Shader *shader;
-    Shader* getShaderPtr();
+    //Shader *shader;
+    //Shader* getShaderPtr();
     void setRatio(float r);
     void setFOV(float f);
     void setZ(float zn,float zf);

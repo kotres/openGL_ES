@@ -7,8 +7,8 @@
 #include <vector>
 
 class Scene{
-    Camera cameraUtilisee;
-    Shader shaderUtilise;
+    unsigned int cameraUtilisee;
+    unsigned int shaderUtilise;
 public:
     std::vector<Objet3D> objets3D;
     std::vector<Camera> cameras;
