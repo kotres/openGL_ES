@@ -17,7 +17,8 @@
 #include "camera.hpp"
 
 class Objet3D{
-    GLuint vbo,vbi,vbNormales,texture;
+    GLuint vbo,vbi,vbNormales,texture;//to do: mettre tous les vbo dans un seul
+    int vertexPosition,normalPosition,texturePosition;
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> normales;
     std::vector<GLfloat> textures;
@@ -29,7 +30,7 @@ class Objet3D{
 public:
    // Camera *camera;
     Objet3D();
-    Objet3D(const char* filePath);
+    Objet3D(const char* filePath, Shader &shader);
     void dessiner(Shader sh, glm::mat4 mvpMatrix);
     ~Objet3D();
 };

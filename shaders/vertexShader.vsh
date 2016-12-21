@@ -1,15 +1,16 @@
 uniform mat4 mvpMatrix;
-
-varying vec3 N;
-varying vec3 v;
+attribute vec3 inVertex;
+attribute vec3 inNormal;
+/*varying vec3 N;
+varying vec3 v;*/
 
 varying vec4 vColor;
 
 void main(void)
 {
-    v = vec3(gl_ModelViewMatrix * gl_Vertex);
-    N = normalize(gl_NormalMatrix * gl_Normal);
-
-    vColor=vec4(abs(gl_Vertex).xyz,1.0);
-   gl_Position = mvpMatrix*gl_Vertex;
+   /* v = vec3(gl_ModelViewMatrix * gl_Vertex);
+    N = normalize(gl_NormalMatrix * gl_Normal);*/
+    vec4 vertex=vec4(inVertex,1.0);
+    vColor=vec4(inNormal,1.0);//vertex;
+   gl_Position = mvpMatrix*vertex;
 }

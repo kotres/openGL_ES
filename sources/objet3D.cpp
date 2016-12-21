@@ -6,34 +6,34 @@ Objet3D::Objet3D()
     //camera=nullptr;
 }
 
-Objet3D::Objet3D(const char *filePath)
+Objet3D::Objet3D(const char *filePath,Shader& shader)
 {
     loadObj(filePath);
 
-    //camera=nullptr;
+    shader.utiliser();
 
     glGenBuffers(1, &vbo);
     //c'est un type array
-    glEnableVertexAttribArray(0);
+    vertexPosition = glGetAttribLocation(shader.ID(), "inVertex");
+    glEnableVertexAttribArray(vertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     //on y met les coordonnees du triangle
     glBufferData(GL_ARRAY_BUFFER, vertices.size()* sizeof(vertices),
                  &vertices.front(), GL_DYNAMIC_DRAW);
     //on dit a opengl comment l'interpreter
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(vertexPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
+    normalPosition=glGetAttribLocation(shader.ID(), "inNormal");
+    glGenBuffers(1, &vbNormales);
+    glEnableVertexAttribArray(normalPosition);
+    glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
+    glBufferData(GL_ARRAY_BUFFER, normales.size()* sizeof(normales),
+                 &normales.front(), GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
     glGenBuffers(1, &vbi);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
-
-
-    glGenBuffers(1, &vbNormales);
-    glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
-    glBufferData(GL_ARRAY_BUFFER, normales.size()* sizeof(normales),
-                 &normales.front(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 }
 
 void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
@@ -43,7 +43,7 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
-       0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+       vertexPosition,
        3,                  // size
        GL_FLOAT,           // type
        GL_FALSE,           // normalized?
@@ -51,10 +51,10 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
        (void*)0            // array buffer offset
     );
 
-    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
     glVertexAttribPointer(
-                2,                                // attribute
+                normalPosition,                                // attribute
                 3,                                // size
                 GL_FLOAT,                         // type
                 GL_FALSE,                         // normalized?
