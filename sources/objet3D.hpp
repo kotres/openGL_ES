@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 #include <vector>
+#include <array>
 //#include <sstream>
 #include<boost/tokenizer.hpp>
 
@@ -22,8 +23,8 @@ class Objet3D{
     std::vector<GLfloat> textures;
     std::vector<unsigned int>iVertices;
     void loadObj(const char* filePath);
-    void parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales,std::vector<GLfloat>& listeTexture);
-    void parseIndices(std::vector<std::string> lineTokens, std::vector<GLfloat>& listeNormales, std::vector<GLfloat> &listeTexture);
+    void parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>> &listeNormales,std::vector<std::array<GLfloat,2>>& listeTexture);
+    void parseIndices(std::vector<std::string> lineTokens, std::vector<std::array<GLfloat,3>>& listeNormales, std::vector<std::array<GLfloat,2>> &listeTexture);
     void loadTexture(const char *filePath);
 public:
    // Camera *camera;
