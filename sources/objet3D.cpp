@@ -79,17 +79,19 @@ void Objet3D::loadObj(const char* filePath){
         std::cout << "le fichier " << filePath << " n'as pas pu etre ouvert" << std::endl;
     }
     else{
-        std::map<int,GLfloat> listeNormales;
+        std::vector<GLfloat> listeNormales;
+        std::vector<GLfloat> listeTexture;
         std::string ligne = "";
             while(!fileStream.eof()) {
                 std::getline(fileStream, ligne);
-                parseObjLine(ligne,listeNormales);
+                parseObjLine(ligne,listeNormales,listeTexture);
                 }
             }
         fileStream.close();
+        loadTexture(filePath);
 }
 
-void Objet3D::parseObjLine(std::string ligne, std::map<int,GLfloat>& listeNormales){
+void Objet3D::parseObjLine(std::string ligne, std::vector<GLfloat> &listeNormales, std::vector<GLfloat> &listeTexture){
     std::vector<std::string> tokens;
     boost::char_separator<char> sep(" /");
     boost::tokenizer<boost::char_separator<char> > tok(ligne,sep);
@@ -107,18 +109,24 @@ void Objet3D::parseObjLine(std::string ligne, std::map<int,GLfloat>& listeNormal
             }
         }
         if(typeLinge=="f"){
-            parseIndices(tokens,listeNormales);
+            parseIndices(tokens,listeNormales,listeTexture);
         }
         if(typeLinge=="vn"){
             for(auto token:tokens){
                 //std::cout<<token<<" ";
-                listeNormales[listeNormales.size()+1]=std::stof(token);//+1 car les indices de .obj commencent a 1
+                listeNormales.push_back(std::stof(token));
+            }
+        }
+        if(typeLinge=="vt"){
+            for(auto token:tokens){
+                //std::cout<<token<<" ";
+                listeTexture.push_back(std::stof(token));
             }
         }
     }
 }
 
-void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::map<int, GLfloat> &listeNormales){
+void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<GLfloat> &listeNormales,std::vector<GLfloat> &listeTexture){
     std::vector<std::string>::iterator it=lineTokens.begin();
     if (lineTokens.size()==3) {
         for(auto token:lineTokens){
@@ -133,10 +141,17 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::map<int, GL
             it++;
             //ajout au vecteur de normales
             //std::cout<<listeNormales.at((std::stoi(*it))-1)<<" ";
-            if(normales.size()<indiceV+1)
-                normales.resize(indiceV+1);
-            normales.at(indiceV)=listeNormales[(std::stoi(*it))];
-            //std::cout<<normales.back()<<" ";
+            if(listeNormales.size()>0){
+                if(normales.size()<indiceV+1)
+                    normales.resize(indiceV+1);
+                normales.at(indiceV)=listeNormales.at(std::stoi(*it)-1);
+                //std::cout<<normales.back()<<" ";
+            }
+            else{
+                if(textures.size()<indiceV+1)
+                    textures.resize(indiceV+1);
+                textures.at(indiceV)=listeTexture.at(std::stoi(*it)-1);
+            }
             it++;
         }
     }
@@ -152,7 +167,24 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::map<int, GL
     }
 }
 
+void Objet3D::loadTexture(const char* filePath)
+{
+    SDL_Surface* surf = SDL_LoadBMP("objets/mugul/mugul_a_roulettes.bmp");
+        if (surf==NULL) { //echec de chargement texture
+            std::cout<<"erreur de chargement de texture: "<< SDL_GetError()<<std::endl;
+        }
+        else{
+            glGenTextures(1,&texture);
+            glBindTexture(GL_TEXTURE_2D,texture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w,surf->h, 0, GL_RGB,GL_UNSIGNED_BYTE,surf->pixels);
+            SDL_FreeSurface(surf);
+        }
+}
+
 Objet3D::~Objet3D()
 {
+    glDeleteTextures(1,&texture);
     glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1,&vbi);
+    glDeleteBuffers(1,&vbNormales);
 }
