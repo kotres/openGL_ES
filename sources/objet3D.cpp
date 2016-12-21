@@ -9,6 +9,7 @@ Objet3D::Objet3D()
 Objet3D::Objet3D(const char *filePath,Shader& shader)
 {
     loadObj(filePath);
+    loadTexture(filePath);
 
     shader.utiliser();
 
@@ -31,6 +32,14 @@ Objet3D::Objet3D(const char *filePath,Shader& shader)
                  &normales.front(), GL_DYNAMIC_DRAW);
     glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
+    texturePosition=glGetAttribLocation(shader.ID(), "inTexture");
+    glGenBuffers(1, &vbTexture);
+    glEnableVertexAttribArray(texturePosition);
+    glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
+    glBufferData(GL_ARRAY_BUFFER, textures.size()* sizeof(textures),
+                 &textures.front(), GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+
     glGenBuffers(1, &vbi);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
@@ -40,7 +49,11 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
 {
     sh.utiliser();
     glUniformMatrix4fv(glGetUniformLocation(sh.ID(),"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
-    glEnableVertexAttribArray(0);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,texture);
+
+    glEnableVertexAttribArray(vertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
        vertexPosition,
@@ -51,7 +64,7 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
        (void*)0            // array buffer offset
     );
 
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(normalPosition);
     glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
     glVertexAttribPointer(
                 normalPosition,                                // attribute
@@ -70,6 +83,7 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
         GL_UNSIGNED_INT,   // type
         (void*)0           // element array buffer offset
     );
+    glDisable(GL_TEXTURE_2D);
 }
 
 void Objet3D::loadObj(const char* filePath){
@@ -88,7 +102,6 @@ void Objet3D::loadObj(const char* filePath){
                 }
             }
         fileStream.close();
-        loadTexture(filePath);
 }
 
 void Objet3D::parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>> &listeNormales,std::vector<std::array<GLfloat,2>>& listeTexture){
@@ -180,8 +193,9 @@ void Objet3D::loadTexture(const char* filePath)
         }
         else{
             glGenTextures(1,&texture);
+            std::cout<<surf->format->BytesPerPixel<<std::endl;
             glBindTexture(GL_TEXTURE_2D,texture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w,surf->h, 0, GL_RGB,GL_UNSIGNED_BYTE,surf->pixels);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w,surf->h, 0, GL_RGB,GL_UNSIGNED_BYTE,surf->pixels);
             SDL_FreeSurface(surf);
         }
 }

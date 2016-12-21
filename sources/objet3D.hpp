@@ -17,7 +17,7 @@
 #include "camera.hpp"
 
 class Objet3D{
-    GLuint vbo,vbi,vbNormales,texture;//to do: mettre tous les vbo dans un seul
+    GLuint vbo,vbi,vbNormales,vbTexture,texture;//to do: mettre tous les vbo dans un seul
     int vertexPosition,normalPosition,texturePosition;
     std::vector<GLfloat> vertices;
     std::vector<GLfloat> normales;
