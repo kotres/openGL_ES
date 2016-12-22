@@ -12,7 +12,7 @@ int main( /*int argc, char* args[] */)
     Shader sh("shaders/vertexShader.vsh","shaders/fragmentShader.fsh");
     if(fen.estValide()==false)
         return 0;
-    Objet3D obj3D("objets/mugul/mugul_a_roulettes.obj",sh);
+    Objet3D obj3D("objets/TV/TV.obj",sh);
     //Objet3D obj3D("objets/teapot.obj",sh);
     //obj3D.translate(glm::vec3( 0.0,0.0,-5.0));
     //obj3D.scale(glm::vec3(5.0));

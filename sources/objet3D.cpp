@@ -6,10 +6,11 @@ Objet3D::Objet3D()
     //camera=nullptr;
 }
 
-Objet3D::Objet3D(const char *filePath,Shader& shader)
+Objet3D::Objet3D(std::string filePath,Shader& shader)
 {
-    loadObj(filePath);
-    loadTexture(filePath);
+    loadObj(filePath.c_str());
+    std::string texturePath=filePath.substr(0,filePath.find_last_of("."))+".bmp";
+    loadTexture(texturePath.c_str());
 
     shader.utiliser();
 
@@ -69,6 +70,17 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
     glVertexAttribPointer(
                 normalPosition,                                // attribute
                 3,                                // size
+                GL_FLOAT,                         // type
+                GL_FALSE,                         // normalized?
+                0,                                // stride
+                (void*)0                          // array buffer offset
+            );
+
+    glEnableVertexAttribArray(texturePosition);
+    glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
+    glVertexAttribPointer(
+                texturePosition,                                // attribute
+                2,                                // size
                 GL_FLOAT,                         // type
                 GL_FALSE,                         // normalized?
                 0,                                // stride
@@ -175,11 +187,25 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<std:
     }
     if (lineTokens.size()==9){
         while(it<lineTokens.end()-2){
-            //iVertices.push_back(std::stoi(*it));
+            unsigned int indiceV=(std::stoi(*it))-1;
+            iVertices.push_back(indiceV);
             it++;
-            //ajout au vecteur d'indices de textures
+            if(textures.size()<2*(indiceV+1)){
+                textures.resize(2*(indiceV+1));
+                //std::cout<<listeNormales.size()<<std::endl;
+            }
+            std::array<GLfloat,2> valTex=listeTexture.at(std::stoi(*it)-1);
+            textures.at(2*indiceV)=valTex.at(0);
+            textures.at(2*indiceV+1)=valTex.at(1);
             it++;
-            //ajout au vecteur d'iVertices de normales
+            if(normales.size()<3*(indiceV+1)){
+                normales.resize(3*(indiceV+1));
+                //std::cout<<normales.size()<<std::endl;
+            }
+            std::array<GLfloat,3> valNorm=listeNormales.at(std::stoi(*it)-1);
+            normales.at(3*indiceV)=valNorm.at(0);
+            normales.at(3*indiceV+1)=valNorm.at(1);
+            normales.at(3*indiceV+2)=valNorm.at(2);
             it++;
         }
     }
@@ -187,15 +213,17 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<std:
 
 void Objet3D::loadTexture(const char* filePath)
 {
-    SDL_Surface* surf = SDL_LoadBMP("objets/mugul/mugul_a_roulettes.bmp");
+    SDL_Surface* surf = SDL_LoadBMP(filePath);
         if (surf==NULL) { //echec de chargement texture
             std::cout<<"erreur de chargement de texture: "<< SDL_GetError()<<std::endl;
         }
         else{
             glGenTextures(1,&texture);
-            std::cout<<surf->format->BytesPerPixel<<std::endl;
+            //std::cout<<surf->format->BytesPerPixel<<std::endl;
             glBindTexture(GL_TEXTURE_2D,texture);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w,surf->h, 0, GL_RGB,GL_UNSIGNED_BYTE,surf->pixels);
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
             SDL_FreeSurface(surf);
         }
 }

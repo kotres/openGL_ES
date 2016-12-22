@@ -30,7 +30,7 @@ class Objet3D{
 public:
    // Camera *camera;
     Objet3D();
-    Objet3D(const char* filePath, Shader &shader);
+    Objet3D(std::string filePath, Shader &shader);
     void dessiner(Shader sh, glm::mat4 mvpMatrix);
     ~Objet3D();
 };
