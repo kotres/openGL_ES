@@ -8,15 +8,23 @@ Objet3D::Objet3D()
 
 Objet3D::Objet3D(std::string filePath,Shader& shader)
 {
+    normalOffset=0;
+    textureOffset=0;
     loadObj(filePath.c_str());
     std::string texturePath=filePath.substr(0,filePath.find_last_of("."))+".bmp";
     loadTexture(texturePath.c_str());
 
     shader.utiliser();
 
+    glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+    glGenBuffers(1, &vbi);
     //c'est un type array
     vertexPosition = glGetAttribLocation(shader.ID(), "inVertex");
+    normalPosition=glGetAttribLocation(shader.ID(), "inNormal");
+    texturePosition=glGetAttribLocation(shader.ID(), "inTexture");
+
+    glBindVertexArray(vao);
     glEnableVertexAttribArray(vertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     //on y met les coordonnees du triangle
@@ -25,25 +33,15 @@ Objet3D::Objet3D(std::string filePath,Shader& shader)
     //on dit a opengl comment l'interpreter
     glVertexAttribPointer(vertexPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
-    normalPosition=glGetAttribLocation(shader.ID(), "inNormal");
-    glGenBuffers(1, &vbNormales);
     glEnableVertexAttribArray(normalPosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
-    glBufferData(GL_ARRAY_BUFFER, normales.size()* sizeof(normales),
-                 &normales.front(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(normalOffset*sizeof(GLfloat)));
 
-    texturePosition=glGetAttribLocation(shader.ID(), "inTexture");
-    glGenBuffers(1, &vbTexture);
     glEnableVertexAttribArray(texturePosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
-    glBufferData(GL_ARRAY_BUFFER, textures.size()* sizeof(textures),
-                 &textures.front(), GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(textureOffset*sizeof(GLfloat)));
 
-    glGenBuffers(1, &vbi);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
+    glBindVertexArray(0);
 }
 
 void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
@@ -54,7 +52,7 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,texture);
 
-    glEnableVertexAttribArray(vertexPosition);
+    /*glEnableVertexAttribArray(vertexPosition);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(
        vertexPosition,
@@ -66,28 +64,29 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
     );
 
     glEnableVertexAttribArray(normalPosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
+    //glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
     glVertexAttribPointer(
                 normalPosition,                                // attribute
                 3,                                // size
                 GL_FLOAT,                         // type
                 GL_FALSE,                         // normalized?
                 0,                                // stride
-                (void*)0                          // array buffer offset
+                (void*)(normalOffset*sizeof(GLfloat))                        // array buffer offset
             );
 
     glEnableVertexAttribArray(texturePosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
+    //glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
     glVertexAttribPointer(
                 texturePosition,                                // attribute
                 2,                                // size
                 GL_FLOAT,                         // type
                 GL_FALSE,                         // normalized?
                 0,                                // stride
-                (void*)0                          // array buffer offset
+                (void*)(textureOffset*sizeof(GLfloat))                          // array buffer offset
             );
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);*/
+    glBindVertexArray(vao);
 
     glDrawElements(
         GL_TRIANGLES,      // mode
@@ -95,6 +94,7 @@ void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
         GL_UNSIGNED_INT,   // type
         (void*)0           // element array buffer offset
     );
+    glBindVertexArray(0);
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -105,18 +105,29 @@ void Objet3D::loadObj(const char* filePath){
         std::cout << "le fichier " << filePath << " n'as pas pu etre ouvert" << std::endl;
     }
     else{
+        std::vector<GLfloat> normales;
+        std::vector<GLfloat> textures;
         std::vector<std::array<GLfloat,3>> listeNormales;
         std::vector<std::array<GLfloat,2>> listeTexture;
         std::string ligne = "";
             while(!fileStream.eof()) {
                 std::getline(fileStream, ligne);
-                parseObjLine(ligne,listeNormales,listeTexture);
+                parseObjLine(ligne,listeNormales,listeTexture,normales,textures);
                 }
-            }
+        vertices.insert(std::end(vertices), std::begin(normales), std::end(normales));
+        vertices.insert(std::end(vertices), std::begin(textures), std::end(textures));
+
+        normalOffset=normales.size();
+        textureOffset=textures.size()+normales.size();
+    }
+
         fileStream.close();
 }
 
-void Objet3D::parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>> &listeNormales,std::vector<std::array<GLfloat,2>>& listeTexture){
+void Objet3D::parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>> &listeNormales,
+                           std::vector<std::array<GLfloat,2>>& listeTexture,
+                           std::vector<GLfloat>& normales,
+                           std::vector<GLfloat>& textures){
     std::vector<std::string> tokens;
     boost::char_separator<char> sep(" /");
     boost::tokenizer<boost::char_separator<char> > tok(ligne,sep);
@@ -134,7 +145,7 @@ void Objet3D::parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>>
             }
         }
         if(typeLinge=="f"){
-            parseIndices(tokens,listeNormales,listeTexture);
+            parseIndices(tokens,listeNormales,listeTexture,normales,textures);
         }
         if(typeLinge=="vn"){
             std::array<GLfloat,3> valNorm;
@@ -151,7 +162,11 @@ void Objet3D::parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>>
     }
 }
 
-void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<std::array<GLfloat,3>>& listeNormales, std::vector<std::array<GLfloat,2>> &listeTexture){
+void Objet3D::parseIndices(std::vector<std::string> lineTokens,
+                           std::vector<std::array<GLfloat,3>>& listeNormales,
+                           std::vector<std::array<GLfloat,2>> &listeTexture,
+                           std::vector<GLfloat>& normales,
+                           std::vector<GLfloat>& textures){
     std::vector<std::string>::iterator it=lineTokens.begin();
     if (lineTokens.size()==3) {
         for(auto token:lineTokens){
@@ -160,7 +175,7 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens, std::vector<std:
     }
     if (lineTokens.size()==6){
         while(it<lineTokens.end()-1){
-            //std::cout<<*it<<" ";
+            //std::cout<<*it<<" ";textures.size()+normales.size())
             unsigned int indiceV=(std::stoi(*it))-1;
             iVertices.push_back(indiceV);
             it++;
@@ -215,7 +230,7 @@ void Objet3D::loadTexture(const char* filePath)
 {
     SDL_Surface* surf = SDL_LoadBMP(filePath);
         if (surf==NULL) { //echec de chargement texture
-            std::cout<<"erreur de chargement de texture: "<< SDL_GetError()<<std::endl;
+            //std::cout<<"erreur de chargement de texture: "<< SDL_GetError()<<std::endl;
         }
         else{
             glGenTextures(1,&texture);
@@ -228,10 +243,12 @@ void Objet3D::loadTexture(const char* filePath)
         }
 }
 
+
 Objet3D::~Objet3D()
 {
+    glDeleteVertexArrays(1, &vao);
     glDeleteTextures(1,&texture);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1,&vbi);
-    glDeleteBuffers(1,&vbNormales);
+    //glDeleteBuffers(1,&vbNormales);
 }
