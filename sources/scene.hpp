@@ -8,6 +8,7 @@
 
 class Scene{
     unsigned int cameraUtilisee;
+    void loadMap();
 public:
     Scene();
     std::vector<Objet3D> objets3D;

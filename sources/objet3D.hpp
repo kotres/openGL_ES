@@ -17,7 +17,7 @@
 #include "camera.hpp"
 
 class Objet3D{
-    GLuint vbo,vbi,vao,texture;
+    GLuint vbo,vbi,vao,texture,shaderID;
     int vertexPosition,normalPosition,texturePosition;
     std::vector<GLfloat> vertices;
     unsigned int normalOffset,textureOffset;
@@ -33,11 +33,16 @@ class Objet3D{
                       std::vector<GLfloat>& normales,
                       std::vector<GLfloat>& textures);
     void loadTexture(const char *filePath);
+    void InitBuffers(Shader &shader);
 public:
    // Camera *camera;
     Objet3D();
     Objet3D(std::string filePath, Shader &shader);
-    void dessiner(Shader sh, glm::mat4 mvpMatrix);
+    Objet3D(std::string textureFilePath,
+            std::vector<GLfloat> vertices,
+            unsigned int normalOffset,
+            unsigned int textureOffset,Shader &shader);
+    void dessiner(glm::mat4 mvpMatrix);
     ~Objet3D();
 };
 

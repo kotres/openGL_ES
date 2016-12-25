@@ -15,77 +15,29 @@ Objet3D::Objet3D(std::string filePath,Shader& shader)
     loadTexture(texturePath.c_str());
 
     shader.utiliser();
-
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &vbi);
-    //c'est un type array
-    vertexPosition = glGetAttribLocation(shader.ID(), "inVertex");
-    normalPosition=glGetAttribLocation(shader.ID(), "inNormal");
-    texturePosition=glGetAttribLocation(shader.ID(), "inTexture");
-
-    glBindVertexArray(vao);
-    glEnableVertexAttribArray(vertexPosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    //on y met les coordonnees du triangle
-    glBufferData(GL_ARRAY_BUFFER, vertices.size()* sizeof(vertices),
-                 &vertices.front(), GL_DYNAMIC_DRAW);
-    //on dit a opengl comment l'interpreter
-    glVertexAttribPointer(vertexPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glEnableVertexAttribArray(normalPosition);
-    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(normalOffset*sizeof(GLfloat)));
-
-    glEnableVertexAttribArray(texturePosition);
-    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(textureOffset*sizeof(GLfloat)));
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
-    glBindVertexArray(0);
+    InitBuffers(shader);
 }
 
-void Objet3D::dessiner(Shader sh, glm::mat4 mvpMatrix)
+Objet3D::Objet3D(std::string textureFilePath,
+                 std::vector<GLfloat> vertices,
+                 unsigned int normalOffset,
+                 unsigned int textureOffset,
+                 Shader &shader)
 {
-    sh.utiliser();
-    glUniformMatrix4fv(glGetUniformLocation(sh.ID(),"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
+    this->normalOffset=normalOffset;
+    this->textureOffset=textureOffset;
+    this->vertices=vertices;
+    loadTexture(textureFilePath.c_str());
+    shader.utiliser();
+    InitBuffers(shader);
+}
+
+void Objet3D::dessiner(glm::mat4 mvpMatrix)
+{
+    glUniformMatrix4fv(glGetUniformLocation(shaderID,"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,texture);
-
-    /*glEnableVertexAttribArray(vertexPosition);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(
-       vertexPosition,
-       3,                  // size
-       GL_FLOAT,           // type
-       GL_FALSE,           // normalized?
-       0,                  // stride
-       (void*)0            // array buffer offset
-    );
-
-    glEnableVertexAttribArray(normalPosition);
-    //glBindBuffer(GL_ARRAY_BUFFER, vbNormales);
-    glVertexAttribPointer(
-                normalPosition,                                // attribute
-                3,                                // size
-                GL_FLOAT,                         // type
-                GL_FALSE,                         // normalized?
-                0,                                // stride
-                (void*)(normalOffset*sizeof(GLfloat))                        // array buffer offset
-            );
-
-    glEnableVertexAttribArray(texturePosition);
-    //glBindBuffer(GL_ARRAY_BUFFER, vbTexture);
-    glVertexAttribPointer(
-                texturePosition,                                // attribute
-                2,                                // size
-                GL_FLOAT,                         // type
-                GL_FALSE,                         // normalized?
-                0,                                // stride
-                (void*)(textureOffset*sizeof(GLfloat))                          // array buffer offset
-            );
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);*/
     glBindVertexArray(vao);
 
     glDrawElements(
@@ -114,11 +66,10 @@ void Objet3D::loadObj(const char* filePath){
                 std::getline(fileStream, ligne);
                 parseObjLine(ligne,listeNormales,listeTexture,normales,textures);
                 }
+        normalOffset=vertices.size();
+        textureOffset=vertices.size()+normales.size();
         vertices.insert(std::end(vertices), std::begin(normales), std::end(normales));
         vertices.insert(std::end(vertices), std::begin(textures), std::end(textures));
-
-        normalOffset=normales.size();
-        textureOffset=textures.size()+normales.size();
     }
 
         fileStream.close();
@@ -243,6 +194,36 @@ void Objet3D::loadTexture(const char* filePath)
         }
 }
 
+void Objet3D::InitBuffers(Shader& shader)
+{
+    shaderID=shader.ID();
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &vbi);
+    //c'est un type array
+    vertexPosition = glGetAttribLocation(shaderID, "inVertex");
+    normalPosition=glGetAttribLocation(shaderID, "inNormal");
+    texturePosition=glGetAttribLocation(shaderID, "inTexture");
+
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(vertexPosition);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    //on y met les coordonnees du triangle
+    glBufferData(GL_ARRAY_BUFFER, vertices.size()* sizeof(vertices),
+                 &vertices.front(), GL_DYNAMIC_DRAW);
+    //on dit a opengl comment l'interpreter
+    glVertexAttribPointer(vertexPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glEnableVertexAttribArray(normalPosition);
+    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(normalOffset*sizeof(GLfloat)));
+
+    glEnableVertexAttribArray(texturePosition);
+    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(textureOffset*sizeof(GLfloat)));
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
+    glBindVertexArray(0);
+}
 
 Objet3D::~Objet3D()
 {
