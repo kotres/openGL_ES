@@ -7,6 +7,7 @@
 class ObjetScene: public ModelMatrix{
 public:
     unsigned int objet3D;
+    unsigned int texture;
 };
 
 #endif

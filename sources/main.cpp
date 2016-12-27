@@ -32,10 +32,15 @@ int main( /*int argc, char* args[] */)
             sc.objetsScene.push_back(objetsc);
         }
     }*/
+
+    Texture tex("objets/TV/TV.bmp");
+    sc.textures.push_back(tex);
+
     ObjetScene objetsc;
     objetsc.translate(glm::vec3( 0.0,0.0,-5.0));
     objetsc.scale(glm::vec3(2));
     objetsc.objet3D=0;
+    objetsc.texture=0;
     sc.objetsScene.push_back(objetsc);
     float time=0.0;
     while(in.euLieu()==false){

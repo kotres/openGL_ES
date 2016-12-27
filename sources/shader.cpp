@@ -29,6 +29,9 @@ Shader::Shader(std::string nomVertex, std::string nomFragment)
         valide=false;
         std::cout<<"erreur de link programme:"<<std::endl<<LogLink;
     }
+    else{
+        initAttribLocation();
+    }
 
 }
 
@@ -93,6 +96,20 @@ void Shader::utiliser()
 GLuint Shader::ID()
 {
     return ProgramID;
+}
+
+void Shader::initAttribLocation()
+{
+    vertexPosition = glGetAttribLocation(ProgramID, "inVertex");
+    normalPosition=glGetAttribLocation(ProgramID, "inNormal");
+    texturePosition=glGetAttribLocation(ProgramID, "inTexture");
+}
+
+void Shader::getAttribLocation(GLuint &vertexPosition, GLuint &normalPosition, GLuint &texturePosition)
+{
+    vertexPosition=this->vertexPosition;
+    normalPosition=this->normalPosition;
+    texturePosition=this->texturePosition;
 }
 
 Shader::~Shader()

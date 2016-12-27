@@ -4,6 +4,7 @@
 #include "camera.hpp"
 #include "objet3D.hpp"
 #include "objetScene.hpp"
+#include "texture.hpp"
 #include <vector>
 
 class Scene{
@@ -12,6 +13,7 @@ class Scene{
 public:
     Scene();
     std::vector<Objet3D> objets3D;
+    std::vector<Texture> textures;
     std::vector<Camera> cameras;
     std::vector<ObjetScene> objetsScene;
     Shader shader;

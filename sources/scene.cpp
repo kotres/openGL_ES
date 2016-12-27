@@ -16,9 +16,12 @@ void Scene::utiliserCamera(unsigned int i){
 void Scene::dessiner()
 {
     shader.utiliser();
+    glEnable(GL_TEXTURE_2D);
     for(ObjetScene& objsc:objetsScene){
-        objets3D.at(objsc.objet3D).dessiner(cameras.at(cameraUtilisee).getVPMatrix()*objsc.getModelMatrix());
+        textures.at(objsc.texture).utiliser();
+        objets3D.at(objsc.objet3D).dessiner(getCamera().getVPMatrix()*objsc.getModelMatrix());
     }
+    glDisable(GL_TEXTURE_2D);
 }
 
 Camera &Scene::getCamera()
