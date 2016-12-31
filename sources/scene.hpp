@@ -6,11 +6,12 @@
 #include "objetScene.hpp"
 #include "texture.hpp"
 #include <vector>
+#include <set>
 
 class Scene{
     unsigned int cameraUtilisee;
-    void loadMap();
 public:
+    void loadMap();
     Scene();
     std::vector<Objet3D> objets3D;
     std::vector<Texture> textures;

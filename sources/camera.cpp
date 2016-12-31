@@ -2,7 +2,7 @@
 
 Camera::Camera(){
     //shader=nullptr;
-    setPerspective(0.78539816339,1.0,0.1,100.0);
+    setPerspective(0.78539816339,1.0,0.1,200.0);
 }
 
 /*Shader* Camera::getShaderPtr(){

@@ -12,7 +12,7 @@ int main( /*int argc, char* args[] */)
     Shader sh("shaders/vertexShader.vsh","shaders/fragmentShader.fsh");
     if(fen.estValide()==false)
         return 0;
-    Objet3D obj3D("objets/TV/TV.obj",sh);
+    Objet3D obj3D("objets/TV/TV.obj");
     //Objet3D obj3D("objets/teapot.obj",sh);
     //obj3D.translate(glm::vec3( 0.0,0.0,-5.0));
     //obj3D.scale(glm::vec3(5.0));
@@ -20,8 +20,9 @@ int main( /*int argc, char* args[] */)
     //obj3D.camera=&cam;
     Scene sc;
     sc.shader=sh;
-    //objsc.camera=&cam;
+    //sc.loadMap();
     sc.objets3D.push_back(obj3D);
+    //objsc.camera=&cam;
     /*for(int i=0;i<25;i++){
         for(int j=0;j<25;j++){
             ObjetScene objetsc;
@@ -33,16 +34,17 @@ int main( /*int argc, char* args[] */)
         }
     }*/
 
-    Texture tex("objets/TV/TV.bmp");
+    Texture tex("textures/texture.bmp");
     sc.textures.push_back(tex);
 
     ObjetScene objetsc;
-    objetsc.translate(glm::vec3( 0.0,0.0,-5.0));
+    objetsc.translate(glm::vec3( 0.0,0.0,-25.0));
     objetsc.scale(glm::vec3(2));
-    objetsc.objet3D=0;
+    objetsc.objet3D=sc.objets3D.size()-1;
     objetsc.texture=0;
     sc.objetsScene.push_back(objetsc);
     float time=0.0;
+    sc.getCamera().translate(glm::vec3(0.0,0.0,0.0));
     while(in.euLieu()==false){
         SDL_Delay(15);
         in.misAJour();
@@ -52,7 +54,7 @@ int main( /*int argc, char* args[] */)
         obj3D.dessiner();*/
         /*for(int i=0;i<25*25;i++)
             sc.objetsScene.at(i).rotate(time*i/50000,time*i/69300);*/
-        sc.objetsScene.at(0).rotate(time/500,time/693);
+        //sc.objetsScene.at(0).rotate(time/500,time/693);
         sc.dessiner();
         fen.afficher();
         time+=15;

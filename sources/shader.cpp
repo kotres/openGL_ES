@@ -19,6 +19,10 @@ Shader::Shader(std::string nomVertex, std::string nomFragment)
     glAttachShader(ProgramID, vertexShaderObject);
     glAttachShader(ProgramID, fragmentShaderObject);
 
+    glBindAttribLocation(ProgramID, INVERTEX, "InVertex");
+    glBindAttribLocation(ProgramID, INNORMAL, "InNormal");
+    glBindAttribLocation(ProgramID, INTEXTURE, "InTexture");
+
     glLinkProgram(ProgramID);
 
     GLint success;
@@ -101,6 +105,7 @@ GLuint Shader::ID()
 void Shader::initAttribLocation()
 {
     vertexPosition = glGetAttribLocation(ProgramID, "inVertex");
+    //std::cout<<vertexPosition<<std::endl;
     normalPosition=glGetAttribLocation(ProgramID, "inNormal");
     texturePosition=glGetAttribLocation(ProgramID, "inTexture");
 }

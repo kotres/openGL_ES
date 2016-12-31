@@ -12,6 +12,10 @@
     geometrie
 };*/
 
+#define INVERTEX 0
+#define INNORMAL 1
+#define INTEXTURE 2
+
 class Shader{
     GLuint ProgramID,vertexPosition,normalPosition,texturePosition;
     bool valide;

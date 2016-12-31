@@ -6,32 +6,32 @@ Objet3D::Objet3D()
     //camera=nullptr;
 }
 
-Objet3D::Objet3D(std::string filePath,Shader& shader)
+Objet3D::Objet3D(std::string filePath)
 {
     normalOffset=0;
     textureOffset=0;
     loadObj(filePath.c_str());
 
-    shader.utiliser();
-    InitBuffers(shader);
+    InitBuffers();
 }
 
 Objet3D::Objet3D(std::vector<GLfloat> vertices,
                  unsigned int normalOffset,
                  unsigned int textureOffset,
-                 Shader &shader)
+                 std::vector<unsigned int> iVertices)
 {
     this->normalOffset=normalOffset;
     this->textureOffset=textureOffset;
     this->vertices=vertices;
+    this->iVertices=iVertices;
 
-    shader.utiliser();
-    InitBuffers(shader);
+    InitBuffers();
 }
 
-void Objet3D::dessiner(glm::mat4 mvpMatrix)
+void Objet3D::dessiner(glm::mat4 mvpMatrix,Shader& shader)
 {
-    glUniformMatrix4fv(glGetUniformLocation(shaderID,"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
+    shader.utiliser();
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID(),"mvpMatrix"), 1,GL_FALSE,glm::value_ptr(mvpMatrix));
     glBindVertexArray(vao);
 
     glDrawElements(
@@ -170,30 +170,27 @@ void Objet3D::parseIndices(std::vector<std::string> lineTokens,
     }
 }
 
-void Objet3D::InitBuffers(Shader& shader)
+void Objet3D::InitBuffers()
 {
-    shaderID=shader.ID();
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &vbi);
     //c'est un type array
-    GLuint vertexPosition,normalPosition,texturePosition;
-    shader.getAttribLocation(vertexPosition,normalPosition,texturePosition);
 
     glBindVertexArray(vao);
-    glEnableVertexAttribArray(vertexPosition);
+    glEnableVertexAttribArray(INVERTEX);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     //on y met les coordonnees du triangle
     glBufferData(GL_ARRAY_BUFFER, vertices.size()* sizeof(vertices),
                  &vertices.front(), GL_DYNAMIC_DRAW);
     //on dit a opengl comment l'interpreter
-    glVertexAttribPointer(vertexPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(INVERTEX, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
-    glEnableVertexAttribArray(normalPosition);
-    glVertexAttribPointer(normalPosition, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(normalOffset*sizeof(GLfloat)));
+    glEnableVertexAttribArray(INNORMAL);
+    glVertexAttribPointer(INNORMAL, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(normalOffset*sizeof(GLfloat)));
 
-    glEnableVertexAttribArray(texturePosition);
-    glVertexAttribPointer(texturePosition, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(textureOffset*sizeof(GLfloat)));
+    glEnableVertexAttribArray(INTEXTURE);
+    glVertexAttribPointer(INTEXTURE, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)(textureOffset*sizeof(GLfloat)));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbi);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, iVertices.size() * sizeof(unsigned int), &iVertices.front(), GL_DYNAMIC_DRAW);
