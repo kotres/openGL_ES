@@ -17,18 +17,16 @@
 #define INTEXTURE 2
 
 class Shader{
-    GLuint ProgramID,vertexPosition,normalPosition,texturePosition;
+    GLuint ProgramID;
     bool valide;
     std::string charger(std::string nomFichier);
     GLuint compiler(std::string nomFichier,	GLenum typeShader);
-    void initAttribLocation();
 public:
     Shader();
     ~Shader();
     Shader(std::string nomVertex,std::string nomFragment);
     void utiliser();
     bool estValide();
-    void getAttribLocation(GLuint& vertexPosition,GLuint& normalPosition,GLuint& texturePosition);
     GLuint ID();
 };
 

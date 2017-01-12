@@ -6,8 +6,7 @@
 #include <GL/gl.h>
 #include <vector>
 #include <array>
-//#include <sstream>
-#include<boost/tokenizer.hpp>
+
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -22,15 +21,7 @@ class Objet3D{
     unsigned int normalOffset,textureOffset;
     std::vector<unsigned int>iVertices;
     void loadObj(const char* filePath);
-    void parseObjLine(std::string ligne, std::vector<std::array<GLfloat,3>> &listeNormales,
-                      std::vector<std::array<GLfloat,2>>& listeTexture,
-                      std::vector<GLfloat>& normales,
-                      std::vector<GLfloat> &textures);
-    void parseIndices(std::vector<std::string> lineTokens,
-                      std::vector<std::array<GLfloat,3>>& listeNormales,
-                      std::vector<std::array<GLfloat,2>> &listeTexture,
-                      std::vector<GLfloat>& normales,
-                      std::vector<GLfloat>& textures);
+    std::array<unsigned int,3> getIndices(std::string strIndices);
     void InitBuffers();
 public:
     Objet3D();
