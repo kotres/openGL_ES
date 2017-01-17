@@ -30,7 +30,7 @@ public:
             unsigned int normalOffset,
             unsigned int textureOffset,std::vector<unsigned int>iVertices);
     void dessiner(glm::mat4 mvpMatrix,Shader& shader);
-    ~Objet3D();
+    void detruire();
 };
 
 #endif

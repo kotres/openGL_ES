@@ -6,7 +6,7 @@ Scene::Scene()
     cameras.push_back(cam);
     cameraUtilisee=0;
     this->shader=shader;
-    //loadMap();
+    loadMap();
 }
 
 void Scene::utiliserCamera(unsigned int i){
@@ -30,7 +30,28 @@ Camera &Scene::getCamera()
     return cameras.at(cameraUtilisee);
 }
 
+
 void Scene::loadMap()
+{
+    //Objet3D obj3D("objets/TV/TV.obj");
+    this->objets3D.push_back(Objet3D("objets/TV/TV.obj"));
+    //Texture tex("textures/texture.bmp");
+    this->textures.push_back(Texture("textures/texture.bmp"));
+    //ObjetScene objSc(0,0);
+    for(int i=0;i<10;i++){
+        for (int j=0;j<10;j++){
+            ObjetScene objsc(0,0);
+            objsc.translate(glm::vec3(0.0,(float)i+1.0,(float)j+1.0));
+            this->objetsScene.push_back(objsc);
+        }
+    }
+    this->objets3D.push_back(Objet3D("objets/grass.obj"));
+    this->textures.push_back(Texture("textures/grass.bmp"));
+    ObjetScene objsc(1,1);
+    this->objetsScene.push_back(objsc);
+}
+
+/*void Scene::loadMap()
 {
     std::ifstream fichier("maps/map.map");
     if(!fichier){
@@ -127,4 +148,4 @@ void Scene::loadMap()
         }
         fichier.close();
     }
-}
+}*/

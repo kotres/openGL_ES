@@ -156,11 +156,9 @@ void Objet3D::InitBuffers()
     glBindVertexArray(0);
 }
 
-Objet3D::~Objet3D()
+void Objet3D::detruire()
 {
     glDeleteVertexArrays(1, &vao);
-    //glDeleteTextures(1,&texture);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1,&vbi);
-    //glDeleteBuffers(1,&vbNormales);
 }

@@ -99,7 +99,7 @@ GLuint Shader::ID()
 }
 
 
-Shader::~Shader()
+void Shader::detruire()
 {
     glDeleteProgram(ProgramID);
 }

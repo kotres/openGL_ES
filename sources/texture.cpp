@@ -27,7 +27,7 @@ void Texture::utiliser()
     glBindTexture(GL_TEXTURE_2D,textureID);
 }
 
-Texture::~Texture()
+void Texture::detruire()
 {
     glDeleteTextures(1,&textureID);
 }

@@ -23,7 +23,7 @@ class Shader{
     GLuint compiler(std::string nomFichier,	GLenum typeShader);
 public:
     Shader();
-    ~Shader();
+    void detruire();
     Shader(std::string nomVertex,std::string nomFragment);
     void utiliser();
     bool estValide();

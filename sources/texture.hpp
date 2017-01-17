@@ -13,7 +13,7 @@ public:
     Texture() {}
     Texture(const char *filePath);
     void utiliser();
-    ~Texture();
+    void detruire();
 };
 
 #endif
