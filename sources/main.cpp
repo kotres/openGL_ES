@@ -45,9 +45,12 @@ int main( /*int argc, char* args[] */)
     sc.objetsScene.push_back(objetsc);
     float time=0.0;
     sc.getCamera().translate(glm::vec3(0.0,0.0,0.0));
-    while(in.euLieu()==false){
+    while(in.getInputState(QUITTER)==false){
         SDL_Delay(15);
         in.misAJour();
+        sc.getCamera().translateD(glm::vec3((float)(in.getInputState(GAUCHE)-in.getInputState(DROITE)),
+                                            0.0f,
+                                            (float)(in.getInputState(AVANCER)-in.getInputState(RECULER))));
         sc.getCamera().rotate(0.010*(in.getY()-300),0.010*(in.getX()-300));
         /*obj3D.translate(glm::vec3( sin(time/900),-0.5+cos(time/800),-5.0));
         obj3D.rotate(time/500,time/693);
