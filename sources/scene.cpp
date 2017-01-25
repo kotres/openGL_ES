@@ -41,7 +41,7 @@ void Scene::loadMap()
     for(int i=0;i<10;i++){
         for (int j=0;j<10;j++){
             ObjetScene objsc(0,0);
-            objsc.translate(glm::vec3(0.0,(float)i+1.0,(float)j+1.0));
+            objsc.translate(glm::vec3(0.0,(float)-i-1.0,(float)-j-1.0));
             this->objetsScene.push_back(objsc);
         }
     }

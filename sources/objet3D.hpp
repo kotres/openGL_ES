@@ -15,6 +15,10 @@
 #include "modelMatrix.hpp"
 #include "camera.hpp"
 
+// sert a charger et utiliser les modeles 3D, ne marche seulement avec les .obj
+// et apres avoir casse le code les obj doivent maintenant obligatoirement contenir des normales
+// et des coordonnees de texture
+
 class Objet3D{
     GLuint vbo,vbi,vao;
     std::vector<GLfloat> vertices;

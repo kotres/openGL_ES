@@ -37,7 +37,7 @@ void Camera::setPerspective(float f, float r, float zn, float zf)
     ProjectionMatrix=glm::perspective(fov,ratio,Znear,Zfar);
 }
 
-glm::mat4 Camera::getVPMatrix(){
-    return ProjectionMatrix*getModelMatrix();
-}
 
+glm::mat4 Camera::getVPMatrix(){
+    return ProjectionMatrix*rotationMatrix*translationMatrix;
+}

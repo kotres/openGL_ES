@@ -11,10 +11,11 @@
     fragment,
     geometrie
 };*/
-
 #define INVERTEX 0
 #define INNORMAL 1
 #define INTEXTURE 2
+
+//classe shader pour les shaders, ne marche pas encore avec geometrie
 
 class Shader{
     GLuint ProgramID;

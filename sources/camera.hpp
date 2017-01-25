@@ -7,6 +7,8 @@
 #include "modelMatrix.hpp"
 #include "shader.hpp"
 
+// utilise pour creer et gerer la camera
+
 class Camera: public ModelMatrix{
     glm::mat4 ProjectionMatrix;
     float ratio;

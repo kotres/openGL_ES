@@ -8,6 +8,9 @@
 #include <vector>
 #include <set>
 
+//classe scene qui contient tout ce qui est utilise pour le rendement a l'ecran qui n'est pas GUI
+//contient aussi la physique
+
 class Scene{
     unsigned int cameraUtilisee;
 public:

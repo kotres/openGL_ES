@@ -2,6 +2,11 @@
 #define INPUT_HPP
 #include <SDL2/SDL.h>
 
+
+// utilese pour le input utilisateur
+// TODO: tous ce qui concerne les evenements fenetre et pouvoir
+// configurer les touches a partir d'un .conf
+
 enum inputName{
     AVANCER,
     RECULER,
