@@ -8,6 +8,7 @@ ModelMatrix::ModelMatrix()
     axeRotation=glm::vec3(0.0,0.0,0.0);
     rotationX=0.0;
     rotationY=0.0;
+    position=glm::vec3(0.0);
 }
 
 void ModelMatrix::rotate(float angleRadian)
@@ -46,18 +47,18 @@ void ModelMatrix::translate(glm::vec3 tr)
 
 void ModelMatrix::translateD(glm::vec3 dtr)
 {
-    position+=dtr;
+    position-=dtr;
     translationMatrix=glm::translate(translationMatrix,dtr);
 }
 
 void ModelMatrix::translateD(glm::vec3 dtr, float angle){
-    position+=dtr;
     /*glm::mat4 rot=glm::rotate(glm::mat4(1.0),angle,axeRotation);
     dtr=glm::vec3(rot*glm::vec4(dtr,0.0));*/
     glm::mat3 rot=glm::mat3(glm::vec3(cos(angle),-sin(angle),0.0f),
                             glm::vec3(sin(angle),cos(angle),0.0f),
                             glm::vec3(0.0f));
     dtr=rot*dtr;
+    position-=dtr;
     translationMatrix=glm::translate(translationMatrix,dtr);
 }
 
@@ -69,4 +70,9 @@ glm::mat4 ModelMatrix::getModelMatrix()
 glm::mat4 ModelMatrix::getRotationMatrix()
 {
     return rotationMatrix;
+}
+
+glm::vec3 ModelMatrix::getPosition()
+{
+    return position;
 }

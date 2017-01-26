@@ -21,16 +21,19 @@ int main( /*int argc, char* args[] */)
         float rotx=0.010*(in.getX()-300);
         float roty=0.010*(in.getY()-300);
         sc.getCamera().rotate(roty,rotx);
-        glm::mat3 rot=glm::mat3(glm::vec3(cos(rotx),-sin(rotx),0.0f),
+        /*glm::mat3 rot=glm::mat3(glm::vec3(cos(rotx),-sin(rotx),0.0f),
                                 glm::vec3(sin(rotx),cos(rotx),0.0f),
-                                glm::vec3(0.0f));
+                                glm::vec3(0.0f));*/
         /*sc.getCamera().translateD(rot*glm::vec3((float)(in.getInputState(GAUCHE)-in.getInputState(DROITE)),
                                             (float)(in.getInputState(AVANCER)-in.getInputState(RECULER)),
                                             0.0f));*/
         sc.getCamera().translateD(glm::vec3((float)(in.getInputState(GAUCHE)-in.getInputState(DROITE)),
                                                 (float)(in.getInputState(AVANCER)-in.getInputState(RECULER)),
                                                 0.0f),rotx);
-        sc.dessiner();
+        sc.joueur.translateD(glm::vec3((float)(in.getInputState(GAUCHE)-in.getInputState(DROITE)),
+                                      (float)(in.getInputState(AVANCER)-in.getInputState(RECULER)),
+                                      0.0f),rotx);
+        sc.miseAJour();
         fen.afficher();
         time+=15;
     }

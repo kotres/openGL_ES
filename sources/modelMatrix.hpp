@@ -29,6 +29,7 @@ public:
     void scaleD(glm::vec3 ds);
     glm::mat4 getModelMatrix();
     glm::mat4 getRotationMatrix();
+    glm::vec3 getPosition();
 };
 
 #endif

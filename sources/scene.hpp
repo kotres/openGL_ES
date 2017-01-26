@@ -13,17 +13,20 @@
 
 class Scene{
     unsigned int cameraUtilisee;
+    void detecterCollision();
 public:
     void loadMap();
     Scene();
     std::vector<Objet3D> objets3D;
     std::vector<Texture> textures;
     std::vector<Camera> cameras;
+    ObjetScene joueur;
     std::vector<ObjetScene> objetsScene;
     Shader shader;
     void utiliserCamera(unsigned int i);
     Camera& getCamera();
     void dessiner();
+    void miseAJour();
 };
 
 #endif
