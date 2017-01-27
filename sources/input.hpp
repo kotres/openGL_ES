@@ -13,11 +13,12 @@ enum inputName{
     GAUCHE,
     DROITE,
     QUITTER,
-    PAUSE
+    PAUSE,
+    ACTION
 };
 
 class Input{
-    bool avancer,reculer,gauche,droite,pause,quitter;
+    bool avancer,reculer,gauche,droite,pause,quitter,action;
     SDL_Event evenements;
     //const Uint8 *etatClavier;
     int x,y; //dx,dy,xPrecedent,yPrecedent;

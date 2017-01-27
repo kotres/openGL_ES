@@ -8,6 +8,7 @@ Input::Input()
     gauche=false;
     droite=false;
     pause=false;
+    action=false;
 
     x=0;
     y=0;
@@ -25,6 +26,12 @@ void Input::misAJour()
         switch (evenements.type) {
         case SDL_QUIT:
             quitter=true;
+            break;
+        case SDL_MOUSEBUTTONDOWN://faudra raffiner ici, on gere tous les boutons de souris en meme temps
+            action=true;
+            break;
+        case SDL_MOUSEBUTTONUP://faudra raffiner ici, on gere tous les boutons de souris en meme temps
+            action=false;
             break;
         case SDL_KEYDOWN:
             switch(evenements.key.keysym.sym){
@@ -99,6 +106,9 @@ bool Input::getInputState(inputName nomInput)
         break;
     case PAUSE:
         return pause;
+        break;
+    case ACTION:
+        return action;
         break;
     default:
         return false;

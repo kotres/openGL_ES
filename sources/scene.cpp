@@ -3,9 +3,10 @@
 Scene::Scene()
 {
     Camera cam;
+    cam.translate(glm::vec3(0.0,0.0,2.0));
     cameras.push_back(cam);
     cameraUtilisee=0;
-    this->shader=shader;
+    this->shader=Shader("shaders/vertexShader.vsh","shaders/fragmentShader.fsh");;
     loadMap();
 }
 
@@ -42,18 +43,18 @@ void Scene::loadMap()
     //Texture tex("textures/texture.bmp");
     this->textures.push_back(Texture("textures/texture.bmp"));
     //ObjetScene objSc(0,0);
+    this->textures.push_back(Texture("textures/marbre.bmp"));
     for(int i=0;i<10;i++){
         for (int j=0;j<10;j++){
             ObjetScene objsc(0,0,2.0,2.0);
+            objsc.scale(glm::vec3(1.0,1.0,10.0));
             objsc.translate(glm::vec3((float)-10*j-1.0,(float)-10*i-1.0,-1.0));
             this->objetsScene.push_back(objsc);
         }
     }
-    joueur=ObjetScene(0,0,2.0,2.0);
-    joueur.scale(glm::vec3(0.5));
     this->objets3D.push_back(Objet3D("objets/grass.obj"));
     this->textures.push_back(Texture("textures/grass.bmp"));
-    ObjetScene objsc(1,1);
+    ObjetScene objsc(1,2);
     this->objetsScene.push_back(objsc);
 }
 
@@ -77,7 +78,7 @@ void Scene::detecterCollision()
         objetsScene=nouvVecteurObjsc;
         nouvVecteurObjsc.clear();
         if(!euCollision)
-            nouvVecteurproj.push_back(proj);;
+            nouvVecteurproj.push_back(proj);
     }
     projectiles=nouvVecteurproj;
 }
@@ -93,14 +94,27 @@ void Scene::miseAJourProjectiles()
     projectiles=nouveauVecProj;
 }
 
-void Scene::miseAJour()
+void Scene::miseAJour(Input& input)
 {
+    float rotx=0.010*(input.getX()-300);
+    float roty=0.010*(input.getY()-150);
+    getCamera().rotate(roty,rotx);
+
+    getCamera().translateD(glm::vec3((float)(input.getInputState(GAUCHE)-input.getInputState(DROITE)),
+                                                    (float)(input.getInputState(AVANCER)-input.getInputState(RECULER)),
+                                                    0.0f),rotx);
+    if(input.getInputState(ACTION)){
+        Projectile proj(-getCamera().getPosition(),rotx-0.010*300.0);
+        proj.translateD(glm::vec3(0.0,2.0,0.0),rotx-0.010*300.0);
+        proj.scale(glm::vec3(0.36));
+        projectiles.push_back(proj);
+    }
     detecterCollision();
-    if(projectiles.size()<100){
+    /*if(projectiles.size()<100){
         Projectile proj(-getCamera().getPosition()+glm::vec3(2.0,0.0,0.0),0.0);
         //proj.translate(-getCamera().getPosition());
         projectiles.push_back(proj);
-    }
+    }*/
     miseAJourProjectiles();
     dessiner();
 }

@@ -1,7 +1,7 @@
 #include "projectile.hpp"
 
 Projectile::Projectile(glm::vec3 origine, float angle)
-    :ObjetScene(0,0,2.0,2.0)
+    :ObjetScene(0,1,2.0,2.0)
 {
     translate(origine);
     rotationX=angle;
