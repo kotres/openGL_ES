@@ -22,6 +22,10 @@ void Scene::dessiner()
         textures.at(objsc.texture).utiliser();
         objets3D.at(objsc.objet3D).dessiner(getCamera().getVPMatrix()*objsc.getModelMatrix(),shader);
     }
+    for(Projectile& proj:projectiles){
+        textures.at(proj.texture).utiliser();
+        objets3D.at(proj.objet3D).dessiner(getCamera().getVPMatrix()*proj.getModelMatrix(),shader);
+    }
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -55,16 +59,48 @@ void Scene::loadMap()
 
 void Scene::detecterCollision()
 {
+    std::vector<ObjetScene> nouvVecteurObjsc;
+    std::vector<Projectile> nouvVecteurproj;
     int k=0;
-    for(auto objsc:objetsScene){
-        if(joueur.enCollision(objsc))
-            std::cout<<"collision avec "<<k<<std::endl;
-        k++;
+    for(auto proj:projectiles){
+        bool euCollision=false;
+        for(auto obj:objetsScene){
+            if(proj.enCollision(obj)&&!euCollision){
+                std::cout<<"collision avec "<<k<<std::endl;
+                euCollision=true;
+            }
+            else{
+                nouvVecteurObjsc.push_back(obj);
+            }
+            k++;
+        }
+        objetsScene=nouvVecteurObjsc;
+        nouvVecteurObjsc.clear();
+        if(!euCollision)
+            nouvVecteurproj.push_back(proj);;
     }
+    projectiles=nouvVecteurproj;
+}
+
+void Scene::miseAJourProjectiles()
+{
+    std::vector<Projectile> nouveauVecProj;
+    for(auto proj:projectiles){
+        proj.miseAJour();
+        if(proj.timeToLive!=0)
+            nouveauVecProj.push_back(proj);
+    }
+    projectiles=nouveauVecProj;
 }
 
 void Scene::miseAJour()
 {
     detecterCollision();
+    if(projectiles.size()<100){
+        Projectile proj(-getCamera().getPosition()+glm::vec3(2.0,0.0,0.0),0.0);
+        //proj.translate(-getCamera().getPosition());
+        projectiles.push_back(proj);
+    }
+    miseAJourProjectiles();
     dessiner();
 }

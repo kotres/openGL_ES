@@ -15,7 +15,7 @@ ObjetScene::ObjetScene(unsigned int objet3D, unsigned int texture, float longueu
     this->texture=texture;
     this->longueur=longueur;
     this->largeur=largeur;
-    if(this->longueur>EPSILON || this->largeur>EPSILON) //faudra changer || par && si une ligne n'est pas tres utile
+    if(this->longueur>EPSILON && this->largeur>EPSILON)
         estPhysique=true;
     else
         estPhysique=false;

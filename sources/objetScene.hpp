@@ -3,12 +3,14 @@
 #include "objet3D.hpp"
 #include "modelMatrix.hpp"
 #include "camera.hpp"
+#include <glm/glm.hpp>
 
 #define EPSILON 0.0001
 
 //classe pour decrire un element d'une scene: sa forme, texture, position, etc..
 
 class ObjetScene: public ModelMatrix{
+protected:
     bool estPhysique;
     bool pointEstDansRectangle(float pointX, float pointY,
                                float carreLongueur,

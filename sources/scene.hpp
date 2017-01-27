@@ -5,6 +5,7 @@
 #include "objet3D.hpp"
 #include "objetScene.hpp"
 #include "texture.hpp"
+#include "projectile.hpp"
 #include <vector>
 #include <set>
 
@@ -14,6 +15,8 @@
 class Scene{
     unsigned int cameraUtilisee;
     void detecterCollision();
+    void miseAJourProjectiles();
+    std::vector<Projectile> projectiles;
 public:
     void loadMap();
     Scene();
