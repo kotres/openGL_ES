@@ -12,5 +12,6 @@ void Application::applicationLoop()
         fenetre.afficher();
         time+=15;
     }
-    std::cout<<"Bravo! vouz avez Reussi!"<<std::endl;
+    if(scene.objetsScene.size()==1)
+        std::cout<<"Bravo! Vouz avez reussi!"<<std::endl;
 }

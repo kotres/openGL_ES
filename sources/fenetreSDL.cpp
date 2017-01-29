@@ -1,4 +1,4 @@
-#include "fenetreSDL.hpp"
+    #include "fenetreSDL.hpp"
 
 Fenetre::Fenetre()
 {
@@ -47,10 +47,10 @@ bool Fenetre::initGL()
     glDepthFunc(GL_LESS);
 
     //verification des parametres
-    int majVer,minVer;
+    /*int majVer,minVer;
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,&majVer);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,&minVer);
-    std::cout<<"version opengl:"<<majVer<<"."<<minVer<<std::endl;
+    std::cout<<"version opengl:"<<majVer<<"."<<minVer<<std::endl;*/
 
     return true;
 }
@@ -68,7 +68,7 @@ bool Fenetre::initGLEW()
 void Fenetre::afficher()
 {
     SDL_GL_SwapWindow(fenetreSDL);
-    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    glClearColor(0.3f,0.3f,0.7f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 }
 

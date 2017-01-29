@@ -62,18 +62,15 @@ void Scene::detecterCollision()
 {
     std::vector<ObjetScene> nouvVecteurObjsc;
     std::vector<Projectile> nouvVecteurproj;
-    int k=0;
     for(auto proj:projectiles){
         bool euCollision=false;
         for(auto obj:objetsScene){
             if(proj.enCollision(obj)&&!euCollision){
-                std::cout<<"collision avec "<<k<<std::endl;
                 euCollision=true;
             }
             else{
                 nouvVecteurObjsc.push_back(obj);
             }
-            k++;
         }
         objetsScene=nouvVecteurObjsc;
         nouvVecteurObjsc.clear();
@@ -97,7 +94,7 @@ void Scene::miseAJourProjectiles()
 void Scene::miseAJour(Input& input)
 {
     float rotx=0.010*(input.getX()-300);
-    float roty=0.010*(input.getY()-150);
+    float roty=0.005*(input.getY());
     getCamera().rotate(roty,rotx);
 
     getCamera().translateD(glm::vec3((float)(input.getInputState(GAUCHE)-input.getInputState(DROITE)),

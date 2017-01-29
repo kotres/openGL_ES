@@ -12,6 +12,6 @@ void Projectile::miseAJour()
 {
     if(timeToLive!=0){
         timeToLive--;
-        translateD(glm::vec3(0.0,1.0,0.0),rotationX);
+        translateD(glm::vec3(0.0,1.1,0.0),rotationX);
     }
 }
