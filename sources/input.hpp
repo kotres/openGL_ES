@@ -1,3 +1,4 @@
+#pragma once
 #ifndef INPUT_HPP
 #define INPUT_HPP
 #include <SDL2/SDL.h>
@@ -18,8 +19,9 @@ enum inputName{
 };
 
 class Input{
+private:
     bool avancer,reculer,gauche,droite,pause,quitter,action;
-    SDL_Event evenements;
+    //SDL_Event evenements;
     //const Uint8 *etatClavier;
     int x,y; //dx,dy,xPrecedent,yPrecedent;
 public:

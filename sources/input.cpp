@@ -1,25 +1,13 @@
 #include "input.hpp"
 
 Input::Input()
-{
-    quitter=false;
-    avancer=false;
-    reculer=false;
-    gauche=false;
-    droite=false;
-    pause=false;
-    action=false;
-
-    x=0;
-    y=0;
-    /*dx=0;
-    dy=0;
-    xPrecedent=0;
-    yPrecedent=0;*/
-}
+:avancer(false),reculer(false),gauche(false),droite(false),
+pause(false),quitter(false),action(false),x(0),y(0)
+{}
 
 void Input::misAJour()
 {
+    SDL_Event evenements;
     while( SDL_PollEvent( &evenements ) != 0 ){
         /*if(evenements.type== SDL_QUIT)
             Quitter=true;*/

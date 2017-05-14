@@ -14,7 +14,7 @@ OBJS = $(foreach file,$(OBJS_WRONG_DIR),objetsCompilation/$(notdir $(file)))
 CC = g++
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -g -Wall -Wextra -std=c++11
+COMPILER_FLAGS =  -std=c++11 -Wall -Wextra -pedantic -Weffc++ -Werror
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lSDL2 -lGL -lGLEW

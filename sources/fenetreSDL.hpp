@@ -1,4 +1,4 @@
-
+#pragma once
 #ifndef FENETRESDL_HPP
 #define FENETRESDL_HPP
 #include <GL/glew.h>
@@ -19,6 +19,7 @@
  */
 
 class Fenetre{
+private:
     SDL_Window* fenetreSDL;
     SDL_GLContext contexteGL;
     bool valide;
@@ -31,5 +32,7 @@ public:
     bool estValide();
     ~Fenetre();
     void afficher();
+    Fenetre(const Fenetre& obj);
+    Fenetre& operator=(const Fenetre& obj);
 };
 #endif

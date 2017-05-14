@@ -1,11 +1,8 @@
     #include "fenetreSDL.hpp"
 
 Fenetre::Fenetre()
+:fenetreSDL(NULL),contexteGL(NULL),valide(false)
 {
-    valide=false;
-    fenetreSDL=NULL;
-    contexteGL=NULL;
-
     valide=initSDL();
     valide&=initGL();
     valide&=initGLEW();
@@ -88,4 +85,17 @@ Fenetre::~Fenetre()
 
     //on quitte sdl
     SDL_Quit();
+}
+
+//TODO: faire ces 2 methodes correctement
+Fenetre::Fenetre(const Fenetre& obj)
+:fenetreSDL(obj.fenetreSDL),contexteGL(obj.contexteGL),valide(obj.valide)
+{
+}
+
+Fenetre& Fenetre::operator=(const Fenetre& obj){
+    this->fenetreSDL=obj.fenetreSDL;
+    this->contexteGL=obj.contexteGL;
+    this->valide=obj.valide;
+    return *this;
 }
