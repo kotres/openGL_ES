@@ -5,7 +5,6 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 #include <iostream>
-#include <unistd.h>
 #define HAUTEUR_FENETRE 600
 #define LARGEUR_FENETRE 600
 
