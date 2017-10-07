@@ -5,33 +5,26 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 #include <iostream>
-#define HAUTEUR_FENETRE 600
-#define LARGEUR_FENETRE 600
 
 
-/* class Fenetre:
- * gere la creation et destruction de:
- * -un contexte SDL
- * -une fenetre SDL en double buffer
- * -une surface openGL
- * Doit etre appele en debut de programme
+/* class SDlenvironment:
+ * Handles the application's windowing and external inputs
  */
 
-class Fenetre{
+class SDlenvironment{
 private:
-    SDL_Window* fenetreSDL;
-    SDL_GLContext contexteGL;
-    bool valide;
+    SDL_Window* SDLwindow;
+    SDL_GLContext GLcontext;
+    bool valid;
     bool initSDL();
     bool initGL();
     bool initGLEW();
 public:
-    //FenetreSDL(int largeur,int hauteur);
-    Fenetre();
-    bool estValide();
-    ~Fenetre();
-    void afficher();
-    Fenetre(const Fenetre& obj);
-    Fenetre& operator=(const Fenetre& obj);
+    SDlenvironment();
+    bool isValid();
+    ~SDlenvironment();
+    void updateSurface();
+    SDlenvironment(const SDlenvironment& obj);
+    SDlenvironment& operator=(const SDlenvironment& obj);
 };
 #endif

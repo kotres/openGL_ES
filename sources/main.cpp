@@ -4,7 +4,7 @@
 
 int main( /*int argc, char* args[] */)
 {
-    Fenetre fen;
+    SDlenvironment fen;
     Input inp;
     while(!inp.getInputState(QUITTER)){
     	inp.misAJour();

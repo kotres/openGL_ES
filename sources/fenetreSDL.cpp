@@ -1,33 +1,33 @@
-    #include "fenetreSDL.hpp"
+#include "fenetreSDL.hpp"
 
-Fenetre::Fenetre()
-:fenetreSDL(NULL),contexteGL(NULL),valide(false)
+SDlenvironment::SDlenvironment()
+:SDLwindow(NULL),GLcontext(NULL),valid(false)
 {
-    valide=initSDL();
-    valide&=initGL();
-    valide&=initGLEW();
+    valid=initSDL();
+    valid&=initGL();
+    valid&=initGLEW();
 }
 
-bool Fenetre::initSDL()
+bool SDlenvironment::initSDL()
 {
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
     {
         std::cout<<"SDL n'a pas pu etre initialise, erreur:"<<SDL_GetError()<<std::endl;
         return false;
     }
-    fenetreSDL = SDL_CreateWindow( "executable", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   LARGEUR_FENETRE, HAUTEUR_FENETRE, SDL_WINDOW_OPENGL );
-    if(fenetreSDL==NULL){
+    SDLwindow = SDL_CreateWindow( "executable", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                   600, 600, SDL_WINDOW_OPENGL );
+    if(SDLwindow==NULL){
         std::cout<<"la fenetre n'as pas pu etre cree, erreur: "<<SDL_GetError()<<std::endl;
         return false;
     }
     return true;
 }
 
-bool Fenetre::initGL()
+bool SDlenvironment::initGL()
 {
-    contexteGL = SDL_GL_CreateContext(fenetreSDL);
-    if(contexteGL==NULL){
+    GLcontext = SDL_GL_CreateContext(SDLwindow);
+    if(GLcontext==NULL){
         std::cout<<"le contexte openGL n'as pas pu etre cree, erreur: "<<SDL_GetError()<<std::endl;
         return false;
     }
@@ -52,7 +52,7 @@ bool Fenetre::initGL()
     return true;
 }
 
-bool Fenetre::initGLEW()
+bool SDlenvironment::initGLEW()
 {
     GLenum erreurGLEW = glewInit();
     if(erreurGLEW!=GLEW_OK){
@@ -62,40 +62,40 @@ bool Fenetre::initGLEW()
     return true;
 }
 
-void Fenetre::afficher()
+void SDlenvironment::updateSurface()
 {
-    SDL_GL_SwapWindow(fenetreSDL);
+    SDL_GL_SwapWindow(SDLwindow);
     glClearColor(0.3f,0.3f,0.7f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 }
 
-bool Fenetre::estValide()
+bool SDlenvironment::isValid()
 {
-    return valide;
+    return valid;
 }
 
-Fenetre::~Fenetre()
+SDlenvironment::~SDlenvironment()
 {
     //destruction du contexte openGL
-    SDL_GL_DeleteContext(contexteGL);
+    SDL_GL_DeleteContext(GLcontext);
 
     //destruction de la fenetre
-    SDL_DestroyWindow( fenetreSDL );
-    fenetreSDL = NULL;
+    SDL_DestroyWindow( SDLwindow );
+    SDLwindow = NULL;
 
     //on quitte sdl
     SDL_Quit();
 }
 
 //TODO: faire ces 2 methodes correctement
-Fenetre::Fenetre(const Fenetre& obj)
-:fenetreSDL(obj.fenetreSDL),contexteGL(obj.contexteGL),valide(obj.valide)
+SDlenvironment::SDlenvironment(const SDlenvironment& obj)
+:SDLwindow(obj.SDLwindow),GLcontext(obj.GLcontext),valid(obj.valid)
 {
 }
 
-Fenetre& Fenetre::operator=(const Fenetre& obj){
-    this->fenetreSDL=obj.fenetreSDL;
-    this->contexteGL=obj.contexteGL;
-    this->valide=obj.valide;
+SDlenvironment& SDlenvironment::operator=(const SDlenvironment& obj){
+    this->SDLwindow=obj.SDLwindow;
+    this->GLcontext=obj.GLcontext;
+    this->valid=obj.valid;
     return *this;
 }
