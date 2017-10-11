@@ -1,15 +1,9 @@
 #include <iostream>
-#include "SDlenvironment.hpp"
-#include "SDLinputHandler.hpp"
+#include "MainApplication.hpp"
 
 int main( /*int argc, char* args[] */)
 {
-    SDlenvironment fen;
-    SDLinputHandler inp;
-    while(!inp.getQuit()){
-        inp.updateIputs();
-        if(inp.getLeft())
-    		std::cout<<"gauche"<<std::endl;
-    }
+    MainApplication app;
+    app.execute();
     return 0;
 }
