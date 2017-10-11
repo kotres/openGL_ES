@@ -1,14 +1,14 @@
 #include <iostream>
-#include "fenetreSDL.hpp"
-#include "input.hpp"
+#include "SDlenvironment.hpp"
+#include "SDLinputHandler.hpp"
 
 int main( /*int argc, char* args[] */)
 {
     SDlenvironment fen;
-    Input inp;
-    while(!inp.getInputState(QUITTER)){
-    	inp.misAJour();
-    	if(inp.getInputState(GAUCHE))
+    SDLinputHandler inp;
+    while(!inp.getQuit()){
+        inp.updateIputs();
+        if(inp.getLeft())
     		std::cout<<"gauche"<<std::endl;
     }
     return 0;

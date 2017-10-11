@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FENETRESDL_HPP
-#define FENETRESDL_HPP
+#ifndef SDL_ENVIRONMENT_HPP
+#define SDL_ENVIRONMENT_HPP
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
